@@ -1,0 +1,6 @@
+module.exports = {
+  'config': 'data_ms/db_config/config.js',
+  'models-path': 'data_ms/db_models',
+  'seeders-path': 'data_ms/db_seeders',
+  'migrations-path': 'data_ms/db_migrations'
+}

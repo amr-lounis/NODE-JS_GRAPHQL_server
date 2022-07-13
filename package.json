@@ -1,0 +1,45 @@
+{
+  "name": "gql_server",
+  "version": "1.0.0",
+  "description": "gql server",
+  "main": "src/gql_server.js",
+  "scripts": {
+    "start": "node src/gql_server.js",
+    "debug": "npx nodemon.cmd gql_server.js",
+    "debug_node": "node src/gql_server.js --trace-warnings",
+    "c": "npx tsc",
+    "db_drop": "npx sequelize-cli db:drop",
+    "db_create": "npx sequelize-cli db:create",
+    "seed": "npx sequelize-cli db:seed:all"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^18.0.3",
+    "apollo-server": "^3.10.0",
+    "apollo-server-express": "^3.10.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "faker": "^5.5.3",
+    "graphql": "^16.5.0",
+    "graphql-fields": "^2.0.3",
+    "graphql-middleware": "^6.1.31",
+    "graphql-subscriptions": "^2.0.0",
+    "graphql-tools": "^8.3.0",
+    "graphql-upload": "^15.0.2",
+    "ima": "^0.16.11",
+    "ims": "^1.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.21.3",
+    "sqlite3": "^5.0.8",
+    "subscriptions-transport-ws": "^0.11.0"
+  },
+  "devDependencies": {
+    "sequelize-auto": "^0.8.8",
+    "sequelize-auto-migrations": "^1.0.3",
+    "sequelize-cli": "^6.4.1",
+    "typescript": "^4.7.4"
+  }
+}

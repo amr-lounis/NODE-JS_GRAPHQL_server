@@ -1,0 +1,8 @@
+/node_modules
+/zip
+/.vs
+/.git
+*.zip
+*.jpg
+*.jpeg
+*.png

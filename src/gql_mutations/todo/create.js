@@ -16,8 +16,11 @@ module.exports = {
         { decoded:decoded, attributes:attributes }
         ,info 
         )=> {
+        // -------------------------------------------------------------------- 
+        if(! args.hasOwnProperty('name') ) throw new Error("id : is required");
+        // -------------------------------------------------------------------- 
         console.log(decoded)//return id of user
-        args.userId = 1;
+        args.userId = decoded.id;
         return todo_controller.create(args,attributes);
     }
 }

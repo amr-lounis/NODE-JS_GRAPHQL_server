@@ -11,5 +11,10 @@ module.exports = {
         args,
         { decoded, attributes },
         info
-    ) => { return todo_controller.create(args,attributes); }
+    ) => {
+        // -------------------------------------------------------------------- 
+        if(! args.hasOwnProperty('id') ) throw new Error("id : is required");
+        // -------------------------------------------------------------------- 
+         return todo_controller.create(args,attributes); 
+        }
 }

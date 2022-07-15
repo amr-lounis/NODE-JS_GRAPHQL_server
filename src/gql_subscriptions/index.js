@@ -1,5 +1,5 @@
-const dateNow = require('./dateNow')
+const notification_receiver = require('./notification_receiver')
 
 module.exports = {
-    dateNow
+    notification_receiver
 }

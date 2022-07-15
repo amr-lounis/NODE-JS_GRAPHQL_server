@@ -4,6 +4,7 @@ const user_update = require('./update')
 const user_delete = require('./delete')
 const user_image_upload = require('./image_upload')
 const user_image_delete = require('./image_delete')
+const notification_sender =  require('./notification_sender')
 
 module.exports = {
     user_signin,
@@ -11,5 +12,6 @@ module.exports = {
     user_update,
     user_delete,
     user_image_upload,
-    user_image_delete
+    user_image_delete,
+    notification_sender
 }

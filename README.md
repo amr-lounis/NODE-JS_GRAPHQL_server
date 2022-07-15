@@ -12,6 +12,9 @@ npm install ima ims jsonwebtoken faker
 npm install mysql2 sqlite3 sequelize
 npm install --save-dev sequelize-auto sequelize-auto-migrations sequelize-cli typescript
 
+npm install --legacy-peer-deps
+
+
 run mysql server
 
 change .env connect data

@@ -2,33 +2,56 @@
 const { createServer } = require("http");
 const { applyMiddleware } = require('graphql-middleware')
 const { ApolloServer} = require("apollo-server-express");
-const { SubscriptionServer } = require("subscriptions-transport-ws");
 
+//--------------
 const express = require("express");
 const attributesSelected = require('graphql-fields')
 const graphqlUploadExpress = require('graphql-upload/graphqlUploadExpress.js');
 
+//-------------- WS
+const { ApolloServerPluginDrainHttpServer }  = require("apollo-server-core");
+const { useServer } = require('graphql-ws/lib/use/ws')
+const { WebSocketServer } = require('ws')
+
 //-------------- local library
-const {Token_Verifay,Token_GraphqlMiddleware} = require('../my_utils/_token')
+const {Token_Verifay} = require('../my_utils/_token')
 pubsub = require('../my_utils/_pubsub');
 const schema = require('./gql_schema');
+
+//-------------- config
+const graphql_path = '/gql';
+const APOLLO_SERVER_PORT = process.env.APOLLO_SERVER_PORT;
 
 //-------------- Middlewares
 const Attributes_GraphqlMiddleware = async (resolve, root, args, context, info) => {
     try {
         context.attributes = Object.keys(attributesSelected(info));
     } catch (error) {
-        console.error({ "ERROR : Attributes_GraphqlMiddleware : ": error.message });
+        console.log({ "ERROR : Attributes_GraphqlMiddleware : ": error.message });
     }
     const result = await resolve(root, args, context, info)
     return result
 }
- 
-//--------------
+
+//-------------- Middlewares
+
+async function Token_GraphqlMiddleware(resolve, root, args, context, info) {
+	context.decoded = Token_Verifay(context.token,info.fieldName)
+    if(context.decoded.id == null) throw new Error('ERROR : Token_GraphqlMiddleware .')
+	return await resolve(root, args, context, info)
+}
+
+//-------------- RUN
 
 async function run () {
     const app = express();
     const httpServer = createServer(app);
+
+    const wsServer = new WebSocketServer({
+        // path: graphql_path,
+        server: httpServer,
+    });
+    const serverCleanup = useServer({ schema }, wsServer);
     //
     var IMAGES_DIR = './images/'
     app.use(express.static(IMAGES_DIR))
@@ -41,55 +64,53 @@ async function run () {
         csrfPrevention: false,
         uploads: false,
         schema:schemaWithMiddleware,
-        context: ({ req }) => {
-            const headers = req.headers;
-            return { headers };
-        },
-        formatError: (err) => {
-            return err.message;
-        },
-        plugins: [{
-            async serverWillStart() {
+        plugins: [
+            ApolloServerPluginDrainHttpServer({ httpServer }),
+            {
+              async serverWillStart() {
                 return {
-                    async drainServer() {
-                        subscriptionServer.close();
-                    }
+                  async drainServer() {
+                    await serverCleanup.dispose();
+                  },
                 };
-            }
-        }]
+              },
+            },
+          ],
+        context: (ctx) => {
+            //console.log('-------------------- ApolloServer : context: Object.keys(ctx) : --------  ',Object.keys(ctx))
+            const token = ctx?.req?.headers?.authorization || '';
+            return {token:token}
+         },
+         formatError: (err) => {
+            return err.message;
+        }
     });
     await server.start();
-    server.applyMiddleware({ app});
-
-// ----------------------------------------------------------
-const { execute, subscribe } = require("graphql");
-    SubscriptionServer.create(
-        {
-            schema: schema,
-            execute: execute,
-            subscribe: subscribe,
-            onConnect: (connectionParams, webSocket, context) => {
-                console.log(' ------ Subscription : Connected : ')
-                // console.log(' ------ Subscription : connectionParams : ' , connectionParams)
-                const Authorization = connectionParams.Authorization
-                // console.log(' ------ Subscription : Authorization : ' ,Authorization)
-                try {
-                    context.decoded = Token_Verifay(Authorization);
-                    console.log(' ------ Subscription : decoded : ' , context.decoded)
-                } catch (error) {
-                    error_msg = " error : ------ Subscription  : "+ error.message ;
-                    console.log(error_msg);
-                    // throw new Error(error_msg);
-                }
-            },
-            onDisconnect:(webSocket, context)=> {
-                console.log(' ------ Subscription : Disconnected ! ');
-            },
+    server.applyMiddleware({ app,path: graphql_path,});
+    //---------------------------------------------------------------- WS
+    useServer({
+        schema,
+        context: (ctx, msg, args) => {
+            // console.log('-------------------- context useServer : Object.keys(ctx) : --------  ',Object.keys(ctx))
+            const token = ctx?.connectionParams?.Authorization || ''
+            var decoded = Token_Verifay(token,'') ;
+            return {decoded:decoded}; 
         },
-        { server: httpServer, path: server.graphqlPath }
+        onConnect: async (ctx) => {
+            // console.log('-------------------- onConnect useServer Object.keys(ctx) : ',Object.keys(ctx))
+            const token = ctx?.connectionParams?.Authorization || ''
+            decoded = Token_Verifay(token,'')
+            console.log('-------------------- server : disconnected .')
+            if(decoded.id == null) return false; // return false to sertver disconnect ro throw new Error('')
+        },
+        onDisconnect(ctx, code, reason) {
+            // console.log('-------------------- onDisconnect useServer .')
+        },
+    },
+    wsServer,
     );
 
-    const PORT = Number(process.env.APOLLO_SERVER_PORT);
+    const PORT = Number(APOLLO_SERVER_PORT);
     httpServer.listen(PORT, () => {console.log(
     `ws://localhost:${PORT}${server.graphqlPath}\
      and\
@@ -100,33 +121,4 @@ const { execute, subscribe } = require("graphql");
 
 run();
 
-// ---------------------------------------------------------------------------------------------- begin test subscriptions publish
-let currentNumber = 0;
-setInterval(incrementNumber, 5000);
-function incrementNumber() {
-    currentNumber++;
-    var d = new Date().toISOString().
-        replace(/T/, ' ').
-        replace(/\..+/, '')
-    msg = `${currentNumber} : ${d}`
-    console.log(`msg send :  =>  '${msg}' `)
-    pubsub.publish("DATE_NOW", { dateNow: msg });
-}
-// ---------------------------------------------------------------------------------------------- end test subscriptions publish
-// run mysql server
-// const { exec } = require('child_process');
-// exec('../', (err, stdout, stderr) => {
-//     if (err) {
-//         console.log('error--------------------');
-//         return;
-//     }
-//     // the *entire* stdout and stderr (buffered)
-//     console.log(`stdout: ${stdout}`);
-//     console.log(`stderr: ${stderr}`);
-// });
-
-// const net = require('net');
-// const client = net.connect({port: 80, host:"google.com"}, () => {
-//   console.log('MyIP='+client.localAddress);
-//   console.log('MyPORT='+client.localPort);
-// });
+console.log('end')

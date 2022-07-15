@@ -19,7 +19,7 @@ pubsub = require('../my_utils/_pubsub');
 const schema = require('./gql_schema');
 
 //-------------- config
-const graphql_path = '/gql';
+const graphql_path = '/graphql';
 const APOLLO_SERVER_PORT = process.env.APOLLO_SERVER_PORT;
 
 //-------------- Middlewares
@@ -36,8 +36,12 @@ const Attributes_GraphqlMiddleware = async (resolve, root, args, context, info) 
 //-------------- Middlewares
 
 async function Token_GraphqlMiddleware(resolve, root, args, context, info) {
-	context.decoded = Token_Verifay(context.token,info.fieldName)
-    if(context.decoded.id == null) throw new Error('ERROR : Token_GraphqlMiddleware .')
+    const exception_list = ["user_create","user_signin"]
+	if(exception_list.includes(info.fieldName)) {console.log('this fieldName : ',info.fieldName,': not need Token_Verifay .')}
+	else {
+        context.decoded = Token_Verifay(context.token);
+        if(context.decoded.id == null) throw new Error('ERROR : Token_GraphqlMiddleware .')
+    }
 	return await resolve(root, args, context, info)
 }
 
@@ -93,13 +97,13 @@ async function run () {
         context: (ctx, msg, args) => {
             // console.log('-------------------- context useServer : Object.keys(ctx) : --------  ',Object.keys(ctx))
             const token = ctx?.connectionParams?.Authorization || ''
-            var decoded = Token_Verifay(token,'') ;
+            var decoded = Token_Verifay(token) ;
             return {decoded:decoded}; 
         },
         onConnect: async (ctx) => {
             // console.log('-------------------- onConnect useServer Object.keys(ctx) : ',Object.keys(ctx))
             const token = ctx?.connectionParams?.Authorization || ''
-            decoded = Token_Verifay(token,'')
+            decoded = Token_Verifay(token)
             console.log('-------------------- server : disconnected .')
             if(decoded.id == null) return false; // return false to sertver disconnect ro throw new Error('')
         },

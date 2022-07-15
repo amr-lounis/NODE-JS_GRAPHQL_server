@@ -12,7 +12,7 @@ module.exports = {
     resolve: async (
         root,
         args,
-        { decoded:decoded, attributes:attributes }
+        { decoded, attributes }
         ,info 
         )=> {
             console.log(args)
@@ -21,6 +21,8 @@ module.exports = {
             if(! args.hasOwnProperty('file') ) throw new Error("file : is required");
             if( args.file==null ) throw new Error("file : is null value !");
             // -------------------------------------------------------------------- 
+            args.userId = decoded.id;
+            // --------------------------------------------------------------------
             return todo_controller.image_upload(args,attributes);
         } 
 }

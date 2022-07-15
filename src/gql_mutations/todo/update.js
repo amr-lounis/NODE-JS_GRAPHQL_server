@@ -14,14 +14,14 @@ module.exports = {
     resolve: (
         root,
         args,
-        { decoded:decoded, attributes:attributes }
+        { decoded, attributes }
         ,info 
         )=> {
         // -------------------------------------------------------------------- 
         if(! args.hasOwnProperty('id') ) throw new Error("id : is required");
         // -------------------------------------------------------------------- 
-        console.log(decoded)//return id of user
         args.userId = decoded.id;
+        // --------------------------------------------------------------------
         return   todo_controller.update(args,attributes);
     }
 }

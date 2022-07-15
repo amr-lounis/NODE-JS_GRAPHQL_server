@@ -15,7 +15,7 @@ module.exports = {
     args: { 
     },
     subscribe: withFilter(
-        () => pubsub.asyncIterator('DATE_NOW'),
+        () => pubsub.asyncIterator('user_notification_sender'),
         (payload, args, context, info) => {
             try {
                 return (context.decoded.id == payload.receiver_id); // true send data // false non send data

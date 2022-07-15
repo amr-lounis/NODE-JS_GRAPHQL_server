@@ -8,11 +8,9 @@ function Token_Create({ id ,name, role }) {
 	return token;
 }
 
-function Token_Verifay(_token,fieldName=null){
+function Token_Verifay(_token){
 	try {
-		const exception_list = ["user_signin","user_signin"]
-		if(exception_list.includes(fieldName)) {console.log('this fieldName : ',fieldName,' not need Token_Verifay .')}
-		else {return jwt.verify(_token, process.env.JWT_Secret); }
+		return jwt.verify(_token, process.env.JWT_Secret); 
 	} catch (error) {// console.log('------------- anonymous');
 		return {id: null,user: 'anonymous',role: null}
 	}

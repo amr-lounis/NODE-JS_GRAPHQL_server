@@ -12,7 +12,7 @@ module.exports = {
     resolve: async (
         root,
         args,
-        {decoded:decoded, attributes:attributes }
+        { decoded, attributes }
         ,info 
         )=> {
             // -------------------------------------------------------------------- 

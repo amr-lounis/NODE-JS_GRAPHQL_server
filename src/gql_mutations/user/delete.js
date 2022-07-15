@@ -9,7 +9,12 @@ module.exports = {
     resolve: (
         root,
         args,
-        { models: { user }, decoded, attributes },
+        { decoded, attributes },
         info
-    ) => { return user_controller.delete(args,attributes) }
+    ) => {
+        // -------------------------------------------------------------------- 
+        if(! args.hasOwnProperty('id') ) throw new Error("id : is required");
+        // -------------------------------------------------------------------- 
+         return user_controller.delete(args,attributes); 
+        }
 }

@@ -15,7 +15,8 @@ class user_controller{
     create(args,attributes){
         return new Promise((resolve, reject) => {
             user.create(args).then(data => {
-                resolve('ok');
+                console.log('create new id : ' + data.id + ' : OK')
+                resolve(data.id);
             }).catch(function (err) {
                 reject(err.message);
             });

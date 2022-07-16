@@ -17,6 +17,6 @@ module.exports = {
         // -------------------------------------------------------------------- 
         args.userId = decoded.id;
         // --------------------------------------------------------------------
-         return todo_controller.create(args,attributes); 
+         return todo_controller.delete(args,attributes); 
         }
 }

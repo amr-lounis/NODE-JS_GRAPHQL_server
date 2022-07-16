@@ -39,8 +39,9 @@ const Attributes_GraphqlMiddleware = async (resolve, root, args, context, info) 
 //-------------- Middlewares
 
 async function Token_GraphqlMiddleware(resolve, root, args, context, info) {
+    const fieldName = info.fieldName;
     const exception_list = ["user_create","user_signin"]
-	if(exception_list.includes(info.fieldName)) {console.log('this fieldName : ',info.fieldName,': not need Token_Verifay .')}
+	if(exception_list.includes(fieldName)) {console.log('this fieldName : ',fieldName,': not need Token_Verifay .')}
 	else {
         context.decoded = my_token.Token_Verifay(context.token);
         if(context.decoded.id == null) throw new Error('ERROR : Token_GraphqlMiddleware .')

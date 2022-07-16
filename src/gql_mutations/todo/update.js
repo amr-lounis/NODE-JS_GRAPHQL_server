@@ -8,7 +8,6 @@ module.exports = {
         name:{ type: GraphQLString },
         description: { type: GraphQLString },
         validation: { type: GraphQLInt },
-        employeeId: { type: GraphQLID },
         customerId: { type: GraphQLID }
     },
     resolve: (
@@ -20,7 +19,7 @@ module.exports = {
         // -------------------------------------------------------------------- 
         if(! args.hasOwnProperty('id') ) throw new Error("id : is required");
         // -------------------------------------------------------------------- 
-        args.userId = decoded.id;
+        args.employeeId = decoded.id;
         // --------------------------------------------------------------------
         return   todo_controller.update(args,attributes);
     }

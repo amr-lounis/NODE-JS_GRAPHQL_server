@@ -23,7 +23,8 @@ class todo_controller{
             employeeId: args.employeeId,
             customerId: args.customerId
         }).then(data => {
-                resolve(data);
+                console.log('create new id : ' + data.id + ' : OK')
+                resolve(data.id);
             }).catch(function (err) {
                 reject(err.message);
             });
@@ -79,7 +80,7 @@ class todo_controller{
 
     async image_delete(args,attributes){
         await this.throwNotExist(args.id)
-        my_files.FileDelete('todos',args.id,args.fileNmae)
+        my_files.FileDelete('todo',args.id,args.fileNmae)
         return "ok";
     } 
 

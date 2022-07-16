@@ -79,8 +79,11 @@ class my_files{
 
     FileDelete(_table, _id, _fileName) {
         if(! /^([A-Za-z0-9.]+)$/.test(_fileName))throw new Error("error : fileName: Use of prohibited symbols ");
-        dirPath = this.DirPath_Get(_table, _id);
-        filePath = path.join(dirPath, _fileName);
+        const dirPath = this.DirPath_Get(_table, _id);
+        const filePath = path.join(dirPath, _fileName);
+        if (!fs.existsSync(filePath)) {
+            throw new Error("error : The file is not exist")
+        }
         try { fs.unlinkSync(filePath); } catch (erro) { throw new Error("error : The file cannot be deleted") }
     }
     

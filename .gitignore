@@ -1,7 +1,9 @@
-/data_ms/node_modules
+/data_ms/node_modules/
+/data_ms/dist/
 /data_ms/package-lock.json
 
-/node_modules
+/node_modules/
+/dist/
 /package-lock.json
 
 /zip

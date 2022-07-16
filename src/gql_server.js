@@ -14,13 +14,16 @@ const { useServer } = require('graphql-ws/lib/use/ws')
 const { WebSocketServer } = require('ws')
 
 //-------------- local library
-const {Token_Verifay} = require('../my_utils/_token')
+const {my_token,my_files,todo_controller,user_controller,cnf} = require('./local_library')
+
 pubsub = require('../my_utils/_pubsub');
 const schema = require('./gql_schema');
 
 //-------------- config
 const graphql_path = '/graphql';
-const APOLLO_SERVER_PORT = process.env.APOLLO_SERVER_PORT;
+const APOLLO_SERVER_HOST = cnf.FILES_HOST;
+const APOLLO_SERVER_PORT = cnf.FILES_PORT;
+const IMAGES_DIR = cnf.FILES_IMAGES_DIR
 
 //-------------- Middlewares
 const Attributes_GraphqlMiddleware = async (resolve, root, args, context, info) => {
@@ -39,7 +42,7 @@ async function Token_GraphqlMiddleware(resolve, root, args, context, info) {
     const exception_list = ["user_create","user_signin"]
 	if(exception_list.includes(info.fieldName)) {console.log('this fieldName : ',info.fieldName,': not need Token_Verifay .')}
 	else {
-        context.decoded = Token_Verifay(context.token);
+        context.decoded = my_token.Token_Verifay(context.token);
         if(context.decoded.id == null) throw new Error('ERROR : Token_GraphqlMiddleware .')
     }
 	return await resolve(root, args, context, info)
@@ -57,7 +60,6 @@ async function run () {
     });
     const serverCleanup = useServer({ schema }, wsServer);
     //
-    var IMAGES_DIR = './images/'
     app.use(express.static(IMAGES_DIR))
     //
     app.use(graphqlUploadExpress());
@@ -97,13 +99,13 @@ async function run () {
         context: (ctx, msg, args) => {
             // console.log('-------------------- context useServer : Object.keys(ctx) : --------  ',Object.keys(ctx))
             const token = ctx?.connectionParams?.Authorization || ''
-            var decoded = Token_Verifay(token) ;
+            const decoded =my_token.Token_Verifay(token) ;
             return {decoded:decoded}; 
         },
         onConnect: async (ctx) => {
             // console.log('-------------------- onConnect useServer Object.keys(ctx) : ',Object.keys(ctx))
             const token = ctx?.connectionParams?.Authorization || ''
-            decoded = Token_Verifay(token)
+            decoded =my_token.Token_Verifay(token)
             console.log('-------------------- server : disconnected .')
             if(decoded.id == null) return false; // return false to sertver disconnect ro throw new Error('')
         },
@@ -116,13 +118,13 @@ async function run () {
 
     const PORT = Number(APOLLO_SERVER_PORT);
     httpServer.listen(PORT, () => {console.log(
-    `ws://localhost:${PORT}${server.graphqlPath}\
+    `ws://${APOLLO_SERVER_HOST}:${PORT}${server.graphqlPath}\
      and\
-     http://localhost:${PORT}${server.graphqlPath}`
+     http://${APOLLO_SERVER_HOST}:${PORT}${server.graphqlPath}`
     );
     });
 };
 
 run();
 
-console.log('end')
+console.log('end process')

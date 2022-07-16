@@ -1,4 +1,9 @@
+/data_ms/node_modules
+/data_ms/package-lock.json
+
 /node_modules
+/package-lock.json
+
 /zip
 /images
 /.vs
@@ -7,3 +12,4 @@
 *.jpg
 *.jpeg
 *.png
+

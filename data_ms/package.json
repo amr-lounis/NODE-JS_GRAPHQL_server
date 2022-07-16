@@ -1,0 +1,22 @@
+{
+  "name": "data_ms",
+  "version": "1.0.0",
+  "main": "./index.js",
+  "bin": "./index.js",
+  "scripts": {
+    "start": "index.js",
+    "c": "npx tsc"
+  },
+  "pkg": {
+    "targets": [ "node16-win-x64" ],
+    "outputPath": "dist"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.21.3"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}

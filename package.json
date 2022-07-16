@@ -8,7 +8,8 @@
     "start": "node src/gql_server.js",
     "debug": "npx nodemon.cmd gql_server.js",
     "debug_node": "node src/gql_server.js --trace-warnings",
-    "c": "npx tsc"
+    "c": "npx tsc",
+    "exe":"pkg ."
   },
   "pkg": {
     "targets": [ "node16-win-x64" ],

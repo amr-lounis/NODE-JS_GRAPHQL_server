@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "description": "gql server",
   "main": "src/gql_server.js",
+  "bin": "src/gql_server.js",
   "scripts": {
     "start": "node src/gql_server.js",
     "debug": "npx nodemon.cmd gql_server.js",
     "debug_node": "node src/gql_server.js --trace-warnings",
     "c": "npx tsc"
+  },
+  "pkg": {
+    "targets": [ "node16-win-x64" ],
+    "outputPath": "dist"
   },
   "keywords": [],
   "author": "",

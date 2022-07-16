@@ -82,9 +82,9 @@ class my_files{
         const dirPath = this.DirPath_Get(_table, _id);
         const filePath = path.join(dirPath, _fileName);
         if (!fs.existsSync(filePath)) {
-            throw new Error("error : The file is not exist")
+            throw new Error("error : The file is not exist : "+filePath)
         }
-        try { fs.unlinkSync(filePath); } catch (erro) { throw new Error("error : The file cannot be deleted") }
+        try { fs.unlinkSync(filePath); } catch (erro) { throw new Error("error : The file cannot be deleted .") }
     }
     
     fileWrite(readStream,_filePath,_max_file_size){

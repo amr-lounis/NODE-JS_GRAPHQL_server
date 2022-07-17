@@ -33,6 +33,7 @@ async function info_GraphqlMiddleware (resolve, root, args, context, info) {
         console.log('--------------------------------------------------')
         console.log('---------- : operationType :',operationType ,' : operationName : ',operationName)
         console.log('---------- : attributes :',attributes)
+        console.log('---------- : decoded : ',decoded)
         console.log('---------- : args : ',Object.keys(args))
         console.log('--------------------------------------------------')
         //----------------------------------------------------------------
@@ -126,11 +127,5 @@ async function run () {
 };
 
 run();
-
-// const net = require('net');
-// const client = net.connect({port: 80, host:"google.com"}, () => {
-//   console.log('MyIP='+client.localAddress);
-// //   console.log('MyPORT='+client.localPort);
-// });
-
+//
 console.log('end process')

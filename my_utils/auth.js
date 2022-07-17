@@ -45,7 +45,7 @@ class auth{
 
         switch(operationName){
             case 'todo_get': { 
-                this.args_required(args,['id'])
+                //
                 break;
             }
             case 'todo_images_get': { 
@@ -103,7 +103,7 @@ class auth{
                 break;
             }
             case 'notification_sender': {
-                this.args_required(args,['id','title','content'])
+                this.args_required(args,['receiver_id','title','content'])
                 break;
             }
             default: { console.log('not user');break;}

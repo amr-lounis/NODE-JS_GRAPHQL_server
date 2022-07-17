@@ -9,6 +9,7 @@ const {
 const {user_controller} = require('../../local_library');
 
 module.exports = {
+     // ------------------------- type of function returned
     type: new GraphQLList(
         new GraphQLObjectType({
         name: 'user_type',
@@ -39,22 +40,7 @@ module.exports = {
         offset: { type: GraphQLInt },
         limit: {type: GraphQLInt }
     },
-    resolve: (
-        root,
-        args,
-        context,
-        info
-    ) => {
-        // --------------------------------------------------------------------
-        var a = {}
-        if( args.hasOwnProperty('id') ) a.id = args.id;
-        
-        if( ! args.hasOwnProperty('offset') ) args.offset= 0;
-        if( ! args.hasOwnProperty('limit') ) args.limit= 10;
-        else if(args.limit > 100) args.limit= 100;
-        // -------------------------------------------------------------------- 
-        return user_controller.getWhere(a,context,args.offset,args.limit)
-    }
+    resolve: ( root, args, context, info  ) => user_controller.getWhere(args,context)
 }
 /**
 query Query($_id: ID) {

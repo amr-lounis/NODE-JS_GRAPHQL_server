@@ -2,20 +2,12 @@ const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = re
 const {user_controller} = require('../../local_library');
 
 module.exports = {
+   // ------------------------- type of function returned
     type: new GraphQLList(GraphQLString),
     args: {
         id:{ type: GraphQLID },
     },
-    resolve: async(
-        root,
-        args,
-        { decoded:decoded, attributes:attributes },
-        info
-    ) => {
-        // -------------------------------------------------------------------- 
-        if(! args.hasOwnProperty('id') ) throw new Error("id : is required");
-        // --------------------------------------------------------------------  
-        return user_controller.images_get(args,attributes)}
+    resolve: ( root, args, context, info  ) => user_controller.images_get(args,context)
 }
 /**
 query Query($_id: ID) {

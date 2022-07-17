@@ -60,6 +60,8 @@ class todo_controller{
         // --------------------------------------------------------------------
         var _Object = {}
         if( args.hasOwnProperty('id') ) _Object.id = args.id;
+        if( args.hasOwnProperty('employeeId'))  _Object.employeeId=args.employeeId;
+        if( args.hasOwnProperty('customerId')) _Object.customerId = args.customerId;
         
         if( ! args.hasOwnProperty('offset') ) args.offset= 0;
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;

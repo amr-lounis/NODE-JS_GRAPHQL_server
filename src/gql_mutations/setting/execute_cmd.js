@@ -6,12 +6,7 @@ module.exports = {
     args: {
         command : { type: GraphQLString },
     },
-    resolve: (
-        root,
-        args,
-        { decoded, attributes }
-        ,info 
-        )=> {
+    resolve: ( root, args, context, info  ) => {
         return new Promise((resolve, reject) => {
                 exec(`${args.command}`, (err, stdout, stderr) => {
                     if (err) {

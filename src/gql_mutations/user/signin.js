@@ -7,14 +7,7 @@ module.exports = {
         name: { type: GraphQLString },
         password: { type: GraphQLString }
     },
-    resolve: (
-        root,
-        args,
-        { attributes },
-        info
-    ) => { 
-        return user_controller.signin(args,attributes) 
-    }
+    resolve: ( root, args, context, info  ) => user_controller.signin(args,context)
 }
 /*
 mutation Mutation($name: String, $password: String) {

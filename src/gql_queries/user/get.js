@@ -42,7 +42,7 @@ module.exports = {
     resolve: (
         root,
         args,
-        { decoded:decoded, attributes:attributes },
+        context,
         info
     ) => {
         // --------------------------------------------------------------------
@@ -53,7 +53,7 @@ module.exports = {
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;
         // -------------------------------------------------------------------- 
-        return user_controller.getWhere(a,attributes,args.offset,args.limit)
+        return user_controller.getWhere(a,context,args.offset,args.limit)
     }
 }
 /**

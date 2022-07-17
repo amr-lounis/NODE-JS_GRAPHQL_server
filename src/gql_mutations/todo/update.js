@@ -10,12 +10,5 @@ module.exports = {
         validation: { type: GraphQLInt },
         customerId: { type: GraphQLID }
     },
-    resolve: (
-        root,
-        args,
-        { decoded, attributes }
-        ,info 
-        )=> {
-        return   todo_controller.update(args,attributes);
-    }
+    resolve: ( root, args, context, info  ) => todo_controller.update(args,context)
 }

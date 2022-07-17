@@ -42,7 +42,16 @@ class auth{
             else throw new Error('ERROR : token .')
         }
         //-------------------------------------------------------
+
         switch(operationName){
+            case 'todo_get': { 
+                this.args_required(args,['id'])
+                break;
+            }
+            case 'todo_images_get': { 
+                this.args_required(args,['id'])
+                break;
+            }
             case 'todo_create': { 
                 this.args_required(args,['name'])
                 break;
@@ -77,7 +86,7 @@ class auth{
                 break;
             }
             case 'user_update': {
-                if(decode.id == null) throw new Error('ERROR : token .')
+                //
             break;
             }
             case 'user_delete': {

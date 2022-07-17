@@ -8,12 +8,5 @@ module.exports = {
         password: { type: GraphQLString },
         description: { type: GraphQLString },
     },
-    resolve: (
-        root,
-        args,
-        { attributes },
-        info
-    ) => { 
-         return user_controller.create(args,attributes)
-         }
+    resolve: ( root, args, context, info  ) => user_controller.create(args,context)
 }

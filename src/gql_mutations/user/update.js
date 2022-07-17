@@ -9,12 +9,6 @@ module.exports = {
         password: { type: GraphQLString },
         description: { type: GraphQLString },
     },
-    resolve: (
-        root,
-        args,
-        { decoded, attributes },
-        info
-    ) => {   
-         return user_controller.update(args,attributes) 
-        } 
+
+    resolve: ( root, args, context, info  ) => user_controller.update(args,context)
 }

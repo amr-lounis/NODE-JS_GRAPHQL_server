@@ -2,6 +2,7 @@ const my_files = require('./my_files')
 const my_token = require('./my_token')
 const { models } = require("../models");
 const {user,role} = models
+//args.thisUserId
 
 class user_controller{
     constructor() {
@@ -12,7 +13,7 @@ class user_controller{
         if( !exist ) throw new Error("id : is not exist");
     }
 
-    create(args,attributes){
+    create(args,context){
         return new Promise((resolve, reject) => {
             user.create(args).then(data => {
                 console.log('create new id : ' + data.id + ' : OK')
@@ -23,7 +24,7 @@ class user_controller{
         })
     }
 
-    delete(args,attributes){
+    delete(args,context){
         return new Promise((resolve, reject) => {
             user.destroy({ where: { id: args.id } }).then(data => {
                 console.log({ data: data });
@@ -35,7 +36,7 @@ class user_controller{
         })
     }
 
-    update(args,attributes){
+    update(args,context){
         return new Promise((resolve, reject) => {
             var id = args.id;
             delete args['id'];
@@ -50,20 +51,24 @@ class user_controller{
         })
     }
 
-    getWhere(_Object,_attributes,_offset,_limit){
-        console.log('------------- _attributes')
-        console.log(_attributes)
-        console.log('------------- _Object')
-        console.log(_Object)
+    getWhere(args,context){
+        // --------------------------------------------------------------------
+        var _Object = {}
+        if( args.hasOwnProperty('id') ) _Object.id = args.id;
+        
+        if( ! args.hasOwnProperty('offset') ) args.offset= 0;
+        if( ! args.hasOwnProperty('limit') ) args.limit= 10;
+        else if(args.limit > 100) args.limit= 100;
+        // -------------------------------------------------------------------- 
         
         return new Promise((resolve, reject) => {
             user.findAll({
-                attributes: _attributes,
+                attributes: context.attributes,
                 raw: true,
                 nest: true,
                 where: _Object,
-                offset:_offset,
-                limit:_limit
+                offset:args.offset,
+                limit:args.limit
             }).then(data => {
                 resolve(data);
             }).catch(err => {
@@ -72,7 +77,7 @@ class user_controller{
         })
     }
 
-    signin(args,attributes){
+    signin(args,context){
         return new Promise((resolve, reject) => {
             user.findOne({
                 where: { name: args.name, password: args.password },
@@ -97,19 +102,19 @@ class user_controller{
         });
     }
 
-    async image_delete(args,attributes){
+    async image_delete(args,context){
         await this.throwNotExist(args.id)
         my_files.FileDelete('user',args.id,args.fileNmae)
         return "ok";
     } 
 
-    async image_upload(args,attributes){
+    async image_upload(args,context){
         console.log('args:',args)
         await this.throwNotExist(args.id)
         return my_files.image_upload(args.file,'user',args.id)
     }
     
-    async images_get(args,attributes){
+    async images_get(args,context){
         await this.throwNotExist(args.id)
         return my_files.UrlListGet('user',args.id)
     } 

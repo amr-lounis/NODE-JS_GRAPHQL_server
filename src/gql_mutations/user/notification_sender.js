@@ -8,13 +8,8 @@ module.exports = {
         title: { type: GraphQLString },
         content: { type: GraphQLString },
     },
-    resolve: (
-        root,
-        args,
-        { decoded, attributes },
-        info
-    ) => { 
-        args.sender_id = decoded.id;
+    resolve: ( root, args, context, info ) => { 
+        args.sender_id = context.decoded.id;
         pubsub.publish("user_notification_sender", args );
         return 'ok';
     }

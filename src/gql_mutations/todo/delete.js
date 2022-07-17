@@ -6,12 +6,5 @@ module.exports = {
     args: {
         id: {type: GraphQLID }
     },
-    resolve: (
-        root,
-        args,
-        { decoded, attributes },
-        info
-    ) => {
-         return todo_controller.delete(args,attributes); 
-        }
+    resolve: ( root, args, context, info  ) => todo_controller.delete(args,context)
 }

@@ -9,14 +9,7 @@ module.exports = {
         id:{ type: GraphQLID },
         file: { type: GraphQLUpload },
     },
-    resolve: async (
-        root,
-        args,
-        { decoded, attributes }
-        ,info 
-        )=> {
-            return user_controller.image_upload(args,attributes) 
-        }
+    resolve: ( root, args, context, info  ) => user_controller.image_upload(args,context)
 }
 
 /*

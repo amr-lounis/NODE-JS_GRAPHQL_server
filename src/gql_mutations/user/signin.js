@@ -10,13 +10,9 @@ module.exports = {
     resolve: (
         root,
         args,
-        { decoded, attributes },
+        { attributes },
         info
     ) => { 
-        // -------------------------------------------------------------------- 
-        if(! args.hasOwnProperty('name') ) throw new Error("name : is required");
-        if(! args.hasOwnProperty('password') ) throw new Error("password : is required");
-        // -------------------------------------------------------------------- 
         return user_controller.signin(args,attributes) 
     }
 }

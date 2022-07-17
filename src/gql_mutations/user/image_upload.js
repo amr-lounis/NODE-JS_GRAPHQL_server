@@ -15,11 +15,6 @@ module.exports = {
         { decoded, attributes }
         ,info 
         )=> {
-            // -------------------------------------------------------------------- 
-            if(! args.hasOwnProperty('id') ) throw new Error("id : is required");
-            if(! args.hasOwnProperty('file') ) throw new Error("file : is required");
-            if( args.file==null ) throw new Error("file : is null value !");
-            // -------------------------------------------------------------------- 
             return user_controller.image_upload(args,attributes) 
         }
 }

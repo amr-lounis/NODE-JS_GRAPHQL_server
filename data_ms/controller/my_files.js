@@ -68,13 +68,13 @@ class my_files{
     }
 
     fileList_get(_table, _id) {
-        var list = []
-        var p = this.DirPath_Get(_table, _id) 
-        console.log(p)
-        fs.readdirSync(p).forEach(file => {
-            list.push(file)
+        var _list = []
+        var _dir_path = this.DirPath_Get(_table, _id) 
+        // console.log(_dir_path)
+        fs.readdirSync(_dir_path).forEach(file => {
+            _list.push(file)
         });
-        return list;
+        return _list;
     }
 
     FileDelete(_table, _id, _fileName) {
@@ -106,8 +106,8 @@ class my_files{
             })
             readStream.on('close', function(){
                 writerStream.end()
-                console.log('readStream close')
-                console.log('console  :file : (\''+_filePath +'\') size = : '+ downloaded)
+                // console.log('readStream close')
+                // console.log('console  :file : (\''+_filePath +'\') size = : '+ downloaded)
                 resolve('console  :file : (\''+_filePath +'\') size = : '+ downloaded)
                 return
             })

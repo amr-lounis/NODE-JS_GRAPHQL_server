@@ -10,8 +10,9 @@ class todo_controller{
         var exist = await todo.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false});
         if( !exist ) throw new Error("id : is not exist");
     }
-
+    //args.thisUserId = decoded.id;
     create(args,attributes){
+
         return new Promise((resolve, reject) => {
             todo.create({
             attributes: attributes,
@@ -20,7 +21,7 @@ class todo_controller{
             name: args.name,
             description: args.description,
             validation: args.validation,
-            employeeId: args.employeeId,
+            employeeId: args.thisUserId,
             customerId: args.customerId
         }).then(data => {
                 console.log('create new id : ' + data.id + ' : OK')

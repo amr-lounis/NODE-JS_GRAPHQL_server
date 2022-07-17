@@ -12,19 +12,19 @@ module.exports = {
         { decoded, attributes }
         ,info 
         )=> {
-        console.log("decoded : ",decoded)
-        //-------------------------------------------------------------------
         return new Promise((resolve, reject) => {
-            exec(`${args.command}`, (err, stdout, stderr) => {
-                if (err) {
-                    console.log('error--------------------');
-                    reject('error--------------------')
+                exec(`${args.command}`, (err, stdout, stderr) => {
+                    if (err) {
+                        const error_message = ' error command : '+ err.message;
+                        console.log(error_message);
+                        reject(error_message)
+                        return;
+                    }
+                    console.log(`stdout: ${stdout}`);
+                    console.log(`stderr: ${stderr}`);
+                    resolve(` ${stdout} `)
                     return;
-                }
-                console.log(`stdout: ${stdout}`);
-                console.log(`stderr: ${stderr}`);
-                resolve(` ${stdout} `)
-            });
+                });
         })
     }
 }

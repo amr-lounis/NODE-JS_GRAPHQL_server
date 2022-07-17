@@ -15,14 +15,6 @@ module.exports = {
         { decoded, attributes }
         ,info 
         )=> {
-            console.log(args)
-            // -------------------------------------------------------------------- 
-            if(! args.hasOwnProperty('id') ) throw new Error("id : is required");
-            if(! args.hasOwnProperty('file') ) throw new Error("file : is required");
-            if( args.file==null ) throw new Error("file : is null value !");
-            // -------------------------------------------------------------------- 
-            args.userId = decoded.id;
-            // --------------------------------------------------------------------
             return todo_controller.image_upload(args,attributes);
         } 
 }

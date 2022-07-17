@@ -14,10 +14,7 @@ module.exports = {
         args,
         { decoded, attributes },
         info
-    ) => {
-        // -------------------------------------------------------------------- 
-        if(! args.hasOwnProperty('id') ) throw new Error("id : is required");
-        // --------------------------------------------------------------------     
+    ) => {   
          return user_controller.update(args,attributes) 
         } 
 }

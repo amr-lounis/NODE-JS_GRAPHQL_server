@@ -13,10 +13,6 @@ module.exports = {
         { decoded, attributes }
         ,info 
         )=> {
-            // -------------------------------------------------------------------- 
-            if(! args.hasOwnProperty('id') ) throw new Error("id : is required");
-            if(! args.hasOwnProperty('fileNmae') ) throw new Error("fileNmae : is required");
-            // -------------------------------------------------------------------- 
             return user_controller.image_delete(args,attributes)
          }
 }

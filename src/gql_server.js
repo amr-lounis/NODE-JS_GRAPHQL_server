@@ -14,11 +14,9 @@ const { useServer } = require('graphql-ws/lib/use/ws')
 const { WebSocketServer } = require('ws')
 
 //-------------- local library
-const {my_token,my_files,todo_controller,user_controller,cnf} = require('./local_library')
-
-pubsub = require('../my_utils/_pubsub');
+const {my_token,cnf} = require('./local_library')
 const schema = require('./gql_schema');
-
+const auth = require('../my_utils/auth')
 //-------------- config
 const graphql_path = '/graphql';
 const APOLLO_SERVER_HOST = cnf.FILES_HOST;
@@ -26,27 +24,28 @@ const APOLLO_SERVER_PORT = cnf.FILES_PORT;
 const IMAGES_DIR = cnf.FILES_IMAGES_DIR
 
 //-------------- Middlewares
-const Attributes_GraphqlMiddleware = async (resolve, root, args, context, info) => {
-    try {
-        context.attributes = Object.keys(attributesSelected(info));
-    } catch (error) {
-        console.log({ "ERROR : Attributes_GraphqlMiddleware : ": error.message });
+async function info_GraphqlMiddleware (resolve, root, args, context, info) {
+    if((info?.parentType?.name == 'Query')||(info?.parentType?.name == 'Mutation')){
+        const operationName = info?.fieldName || ''
+        const operationType = info?.parentType?.name || '';
+        const attributes = Object.keys(attributesSelected(info));
+        const decoded = my_token.Token_Verifay(context.token);
+        console.log('--------------------------------------------------')
+        console.log('---------- : operationType :',operationType ,' : operationName : ',operationName)
+        console.log('---------- : attributes :',attributes)
+        console.log('---------- : args : ',Object.keys(args))
+        console.log('--------------------------------------------------')
+        //----------------------------------------------------------------
+        auth.authorization(operationName,decoded,args,attributes)
+        //----------------------------------------------------------------
+        context.operationName = operationName
+        context.operationType = operationType
+        context.attributes    = attributes
+        context.decoded       = decoded
+        args.thisUserId       = decoded.id;
     }
     const result = await resolve(root, args, context, info)
     return result
-}
-
-//-------------- Middlewares
-
-async function Token_GraphqlMiddleware(resolve, root, args, context, info) {
-    const fieldName = info.fieldName;
-    const exception_list = ["user_create","user_signin"]
-	if(exception_list.includes(fieldName)) {console.log('this fieldName : ',fieldName,': not need Token_Verifay .')}
-	else {
-        context.decoded = my_token.Token_Verifay(context.token);
-        if(context.decoded.id == null) throw new Error('ERROR : Token_GraphqlMiddleware .')
-    }
-	return await resolve(root, args, context, info)
 }
 
 //-------------- RUN
@@ -54,18 +53,18 @@ async function Token_GraphqlMiddleware(resolve, root, args, context, info) {
 async function run () {
     const app = express();
     const httpServer = createServer(app);
-
+    //
     const wsServer = new WebSocketServer({
-        // path: graphql_path,
         server: httpServer,
     });
+    //
     const serverCleanup = useServer({ schema }, wsServer);
     //
     app.use(express.static(IMAGES_DIR))
     //
     app.use(graphqlUploadExpress());
     //
-    const schemaWithMiddleware = applyMiddleware(schema, Attributes_GraphqlMiddleware,Token_GraphqlMiddleware)
+    const schemaWithMiddleware = applyMiddleware(schema, info_GraphqlMiddleware)
     // 
     const server = new ApolloServer({
         csrfPrevention: false,
@@ -84,7 +83,7 @@ async function run () {
             },
           ],
         context: (ctx) => {
-            //console.log('-------------------- ApolloServer : context: Object.keys(ctx) : --------  ',Object.keys(ctx))
+            // console.log('-------------------- ApolloServer : context: Object.keys(ctx) : --------  ',Object.keys(ctx.req))
             const token = ctx?.req?.headers?.authorization || '';
             return {token:token}
          },
@@ -128,10 +127,10 @@ async function run () {
 
 run();
 
-const net = require('net');
-const client = net.connect({port: 80, host:"google.com"}, () => {
-  console.log('MyIP='+client.localAddress);
-//   console.log('MyPORT='+client.localPort);
-});
+// const net = require('net');
+// const client = net.connect({port: 80, host:"google.com"}, () => {
+//   console.log('MyIP='+client.localAddress);
+// //   console.log('MyPORT='+client.localPort);
+// });
 
 console.log('end process')

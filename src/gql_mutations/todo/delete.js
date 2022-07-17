@@ -12,11 +12,6 @@ module.exports = {
         { decoded, attributes },
         info
     ) => {
-        // -------------------------------------------------------------------- 
-        if(! args.hasOwnProperty('id') ) throw new Error("id : is required");
-        // -------------------------------------------------------------------- 
-        args.userId = decoded.id;
-        // --------------------------------------------------------------------
          return todo_controller.delete(args,attributes); 
         }
 }

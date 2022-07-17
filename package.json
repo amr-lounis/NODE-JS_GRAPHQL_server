@@ -8,11 +8,13 @@
     "start": "node src/gql_server.js",
     "debug": "npx nodemon.cmd gql_server.js",
     "debug_node": "node src/gql_server.js --trace-warnings",
-    "c": "npx tsc",
-    "exe":"pkg ."
+    "ts_compile": "npx tsc",
+    "exe": "npx pkg ."
   },
   "pkg": {
-    "targets": [ "node16-win-x64" ],
+    "targets": [
+      "node16-win-x64"
+    ],
     "outputPath": "dist"
   },
   "keywords": [],
@@ -24,6 +26,7 @@
     "apollo-server": "^3.10.0",
     "apollo-server-core": "^3.10.0",
     "apollo-server-express": "^3.10.0",
+    "data_ms": "file:./data_ms",
     "express": "^4.18.1",
     "graphql": "^16.5.0",
     "graphql-fields": "^2.0.3",
@@ -34,10 +37,10 @@
     "graphql-ws": "^5.9.1",
     "ima": "^0.16.11",
     "ims": "^1.4.2",
-    "ws": "^8.8.0",
-   	"data_ms": "file:./data_ms"
+    "ws": "^8.8.0"
   },
   "devDependencies": {
+    "pkg": "^5.8.0",
     "typescript": "^4.7.4"
   }
 }

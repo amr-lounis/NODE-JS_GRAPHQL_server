@@ -5,7 +5,7 @@
   "bin": "./index.js",
   "scripts": {
     "start": "index.js",
-    "c": "npx tsc"
+    "ts_compile": "npx tsc"
   },
   "pkg": {
     "targets": [ "node16-win-x64" ],

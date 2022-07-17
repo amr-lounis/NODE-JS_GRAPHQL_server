@@ -10,14 +10,17 @@ class my_token {
 
 	Token_Create({ id ,name, role }) {
 		const payload = {id:id,user: name,role: role};
+		// console.log("Token_Create : ",{id:id,user: name,role: role})
 		const token = jwt.sign(payload, JWT_Secret, { expiresIn: JWT_ExpiresDay });
-		console.log({ token: token})
+		// console.log({ token: token})
 		return token;
 	}
 	
 	Token_Verifay(_token){
 		try {
-			return jwt.verify(_token, JWT_Secret); 
+			const tv = jwt.verify(_token, JWT_Secret);
+			// console.log("Token_Verifay : ",tv)
+			return tv;
 		} catch (error) {// console.log('------------- anonymous');
 			return {id: null,user: 'anonymous',role: null}
 		}

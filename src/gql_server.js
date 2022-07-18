@@ -1,4 +1,12 @@
-﻿//-------------- public library
+﻿const {machineId, machineIdSync} = require('node-machine-id') ;
+// console.log(machineIdSync())
+// console.log(machineIdSync({original: true}))
+if(machineIdSync({original: true}) != 'b403e901-522d-489b-98e2-fce7a11b88e4'){
+    console.log('This device is not licensed')
+    process.exit()
+}
+
+//-------------- public library
 const { createServer } = require("http");
 const { applyMiddleware } = require('graphql-middleware')
 const { ApolloServer} = require("apollo-server-express");

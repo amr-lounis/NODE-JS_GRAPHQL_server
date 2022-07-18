@@ -2,6 +2,9 @@
 /data_ms/dist/
 /data_ms/package-lock.json
 
+/my_utils/node_modules/
+/my_utils/apackage-lock.json
+
 /node_modules/
 /dist/
 /package-lock.json

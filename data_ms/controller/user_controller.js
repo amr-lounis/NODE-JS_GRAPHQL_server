@@ -1,7 +1,6 @@
-const my_files = require('./my_files')
-const my_token = require('./my_token')
+const my_files = require('./my_files');
 const { models } = require("../models");
-const {user,role} = models
+const {user,role} = models ;
 //args.thisUserId
 
 class user_controller{
@@ -88,9 +87,15 @@ class user_controller{
                 console.log('------------------- signin');
                 // console.log({ data: data });
                 // console.log({ id: data.id, name: data.name, role: data.role.name })
+                // if (data) {
+                //     const token = my_token.Token_Create({ id: data.id, name: data.name, role: data.role.name });
+                //     resolve(token);
+                // }
+                // else {
+                //     throw new Error('error signin');
+                // }
                 if (data) {
-                    const token = my_token.Token_Create({ id: data.id, name: data.name, role: data.role.name });
-                    resolve(token);
+                    resolve(data);
                 }
                 else {
                     throw new Error('error signin');

@@ -37,6 +37,7 @@
     "graphql-ws": "^5.9.1",
     "ima": "^0.16.11",
     "ims": "^1.4.2",
+    "node-machine-id": "^1.1.12",
     "ws": "^8.8.0"
   },
   "devDependencies": {

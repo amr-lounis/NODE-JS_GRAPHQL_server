@@ -4,17 +4,24 @@
   "main": "./index.js",
   "bin": "./index.js",
   "scripts": {
-    "start": "index.js",
-    "ts_compile": "npx tsc"
+    "start": "node index.js",
+    "ts_compile": "npx tsc",
+    "db_drop": "npx sequelize-cli db:drop",
+    "db_create": "npx sequelize-cli db:create",
+    "seed": "npx sequelize-cli db:seed:all"
   },
   "pkg": {
-    "targets": [ "node16-win-x64" ],
+    "targets": [
+      "node16-win-x64"
+    ],
     "outputPath": "dist"
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.21.3"
+    "sequelize": "^6.21.3",
+    "sqlite3": "^5.0.9",
+    "data_ms": "file:../my_utils"
   },
   "devDependencies": {
     "sequelize-auto": "^0.8.8",

@@ -7,7 +7,18 @@ module.exports = {
         name: { type: GraphQLString },
         password: { type: GraphQLString }
     },
-    resolve: ( root, args, context, info  ) => user_controller.signin(args,context)
+    resolve: async ( root, args, context, info  ) =>{
+        const data = await user_controller.signin(args,context)
+        console.log({ data: data });
+        console.log({ id: data.id, name: data.name, role: data.role.name })
+        if (data) {
+            const token = my_token.Token_Create({ id: data.id, name: data.name, role: data.role.name });
+            resolve(token);
+        }
+        else {
+            throw new Error('error signin');
+        }
+    }
 }
 /*
 mutation Mutation($name: String, $password: String) {

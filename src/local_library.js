@@ -1,6 +1,13 @@
 const controllers = require('data_ms');
+const my_token =  require('./my_utils/my_token');
+const _pubsub = require('./my_utils/_pubsub');
+const auth = require('./my_utils/auth');
+
 console.log('local_library : ',Object.keys(controllers))
 
 module.exports = {
-    ...controllers
+    ...controllers,
+    my_token,
+    _pubsub,
+    auth
 } 

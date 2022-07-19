@@ -1,5 +1,5 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
-const pubsub = require('../../../my_utils/_pubsub');
+const {pubsub} = require('../../local_library');
 
 module.exports = {
     type: GraphQLString,

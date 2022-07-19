@@ -128,7 +128,7 @@ class my_files{
                 //--------------------------
                 var full_path = this.FileFullPath_Generate(_table,_id,fileExtension)
                 //--------------------------
-                var max_file_size = 512*1024;
+                var max_file_size = 1024*1024;
                 //--------------------------
                 var r =  await this.fileWrite(createReadStream(),full_path,max_file_size)
                 resolve(r)

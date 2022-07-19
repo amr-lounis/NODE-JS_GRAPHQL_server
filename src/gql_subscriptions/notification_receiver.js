@@ -1,4 +1,4 @@
-const pubsub = require('../../my_utils/_pubsub');
+const {pubsub} = require('../local_library');
 
 const { withFilter } = require('graphql-subscriptions');
 const { GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt,GraphQLObjectType } = require('graphql')

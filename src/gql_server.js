@@ -22,14 +22,14 @@ const { useServer } = require('graphql-ws/lib/use/ws')
 const { WebSocketServer } = require('ws')
 
 //-------------- local library
-const {my_token,cnf} = require('./local_library')
 const schema = require('./gql_schema');
-const auth = require('../my_utils/auth')
+const {my_token,auth} = require('./local_library')
+
 //-------------- config
 const graphql_path = '/graphql';
-const APOLLO_SERVER_HOST = cnf.FILES_HOST;
-const APOLLO_SERVER_PORT = cnf.FILES_PORT;
-const IMAGES_DIR = cnf.FILES_IMAGES_DIR
+const APOLLO_SERVER_HOST = 'localhost';
+const APOLLO_SERVER_PORT = '5000'
+const IMAGES_DIR = './files/'
 
 //-------------- Middlewares
 async function info_GraphqlMiddleware (resolve, root, args, context, info) {

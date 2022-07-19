@@ -1,5 +1,5 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
-const {user_controller} = require('../../local_library');
+const {user_controller,my_token} = require('../../local_library');
 
 module.exports = {
     type: GraphQLString,
@@ -12,8 +12,7 @@ module.exports = {
         console.log({ data: data });
         console.log({ id: data.id, name: data.name, role: data.role.name })
         if (data) {
-            const token = my_token.Token_Create({ id: data.id, name: data.name, role: data.role.name });
-            resolve(token);
+            return my_token.Token_Create({ id: data.id, name: data.name, role: data.role.name });
         }
         else {
             throw new Error('error signin');

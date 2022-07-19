@@ -85,15 +85,6 @@ class user_controller{
                 nest: true,
             }).then(data => {
                 console.log('------------------- signin');
-                // console.log({ data: data });
-                // console.log({ id: data.id, name: data.name, role: data.role.name })
-                // if (data) {
-                //     const token = my_token.Token_Create({ id: data.id, name: data.name, role: data.role.name });
-                //     resolve(token);
-                // }
-                // else {
-                //     throw new Error('error signin');
-                // }
                 if (data) {
                     resolve(data);
                 }

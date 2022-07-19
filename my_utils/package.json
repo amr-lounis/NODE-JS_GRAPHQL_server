@@ -1,8 +1,0 @@
-{
-  "name": "my_utils",
-  "version": "1.0.0",
-  "main": "./index.js",
-  "dependencies": {
-    "jsonwebtoken": "^8.5.1"
-  }
-}

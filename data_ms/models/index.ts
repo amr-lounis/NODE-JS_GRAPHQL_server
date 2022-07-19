@@ -1,12 +1,11 @@
 'use strict';
 
-const env = 'mysql_env';
-var config = require('../config/config')[env];
-
+var config = require('../config/config')['environment'];
+console.log(config)
+//----------------------------------
 const { Sequelize } = require('sequelize');
 const { initModels } = require("./init-models");
 //----------------------------------
-console.log(config)
 var sequelize = new Sequelize(config)
 sequelize.authenticate().then(() => {
     console.log('DATABASE : Connection successfully.');

@@ -1,16 +1,14 @@
 const fs = require('fs');
 const path = require('path');
 
-const {cnf} = require("my_utils")
+const cnf = require("../config/cnf")
 
 class my_files{
     constructor() {
         console.log("-----------: my_files class constructor");
     }
 
-    IMAGES_DIR = cnf.FILES_IMAGES_DIR ;
-    PORT = cnf.FILES_PORT;
-    HOST = cnf.FILES_HOST;
+    IMAGES_DIR = cnf.IMAGES_DIR ;
 
     _NumberPad(num, size) {
         if (num.length > size) throw new Error("max size of Number is " + size)
@@ -54,7 +52,7 @@ class my_files{
 
     UrlGet(_table, _id, _file) {
         var id_string = this._NumberPad(_id, 10)
-        var url = 'http://' + this.HOST + ':' + this.PORT + '/' + _table + '/' + id_string + '/' + _file;
+        var url = 'images/' + _table + '/' + id_string + '/' + _file;
         return url
     }
 

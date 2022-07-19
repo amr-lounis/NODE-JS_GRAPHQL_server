@@ -23,7 +23,7 @@ const { WebSocketServer } = require('ws')
 
 //-------------- local library
 const schema = require('./gql_schema');
-const {my_token,auth} = require('./local_library')
+const {my_token,authorization} = require('./local_library')
 
 //-------------- config
 const graphql_path = '/graphql';
@@ -45,7 +45,7 @@ async function info_GraphqlMiddleware (resolve, root, args, context, info) {
         console.log('---------- : args : ',Object.keys(args))
         console.log('--------------------------------------------------')
         //----------------------------------------------------------------
-        auth.authorization(operationName,decoded,args,attributes)
+        authorization(operationName,decoded,args,attributes)
         //----------------------------------------------------------------
         context.operationName = operationName
         context.operationType = operationType

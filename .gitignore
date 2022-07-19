@@ -6,14 +6,15 @@
 /dist/
 /package-lock.json
 
-/zip
+zip
 /files
 /.vs
 /.git
+
+
 *.zip
 *.jpg
 *.jpeg
 *.png
 *.exe
-/**.sqlite
-database.sqlite
+*.sqlite

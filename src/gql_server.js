@@ -40,10 +40,10 @@ async function info_GraphqlMiddleware (resolve, root, args, context, info) {
         const decoded = my_token.Token_Verifay(context.token);
         console.log('--------------------------------------------------')
         console.log('---------- : operationType :',operationType ,' : operationName : ',operationName)
-        // console.log('---------- : attributes :',attributes)
-        // console.log('---------- : decoded : ',decoded)
-        // console.log('---------- : args : ',Object.keys(args))
-        // console.log('--------------------------------------------------')
+        console.log('---------- : attributes :',attributes)
+        console.log('---------- : decoded : ',JSON.stringify(decoded))
+        console.log('---------- : args : ',Object.keys(args))
+        console.log('--------------------------------------------------')
         //----------------------------------------------------------------
         auth.authorization(operationName,decoded,args,attributes)
         //----------------------------------------------------------------

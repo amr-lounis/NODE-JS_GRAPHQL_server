@@ -7,8 +7,12 @@ class todo_controller{
         console.log("-----------: todo controller constructor");
     }
     async throwNotExist(id){
+   
         var exist = await todo.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false});
-        if( !exist ) throw new Error("id : is not exist");
+        if( !exist ) {
+            // console.log('throwNotExist id values : ',id)
+            throw new Error(`not exist todo.id='${id}' .`);
+        }
     }
     //args.thisUserId = decoded.id;
     create(args,context){

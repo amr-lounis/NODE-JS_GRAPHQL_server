@@ -7,9 +7,38 @@ class user_controller{
     constructor() {
         console.log("-----------: user controller constructor");
     }
+
+    initDB(){
+        return new Promise( async (resolve, reject) => {
+            var notExist = await user.count().then(count => {console.log();return (count == 0) ? true : false});
+            if(notExist){
+                var role_admin = {
+                    id:'1',
+                    name:'admin'
+                }
+                var user_admin = {
+                    id:'1',
+                    name:'admin',
+                    password:'admin',
+                    roleId:1
+                }
+                try {
+                    await role.create(role_admin)
+                    await user.create(user_admin)
+                    resolve('create admin role and user');
+                } catch (error) {
+                    reject('ERROR : create admin role and user');
+                }
+            }
+        })
+    }
+
     async throwNotExist(id){
         var exist = await user.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false});
-        if( !exist ) throw new Error("id : is not exist");
+        if( !exist ){
+            // console.log('throwNotExist id values : ',id)
+            throw new Error(`not exist user.id='${id}' .`);
+        }
     }
 
     create(args,context){

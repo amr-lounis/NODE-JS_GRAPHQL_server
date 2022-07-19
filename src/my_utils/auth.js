@@ -111,7 +111,7 @@ class auth{
         //-------------------------------------------------------
         switch(operationName){
             case 'execute_cmd': { 
-                this.args_required(args,['id','title','content'])
+                this.args_required(args,['command'])
                 this.role_authorized(decode.role,['admin'])
                 break;
             }

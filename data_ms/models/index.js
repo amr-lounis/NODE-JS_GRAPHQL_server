@@ -1,9 +1,6 @@
-'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
 var config = require('../config/config')['environment'];
-console.log(config);
 const { Sequelize } = require('sequelize');
-const { initModels } = require("./init-models");
+const InitModels = require("./init-models");
 var sequelize = new Sequelize(config);
 sequelize.authenticate().then(() => {
     console.log('DATABASE : Connection successfully.');
@@ -11,11 +8,7 @@ sequelize.authenticate().then(() => {
     console.log('DATABASE : Connection error.', e.message);
     process.exit();
 });
-class Models {
-}
-Models.instance = new initModels(sequelize);
-Models.getInstance = () => Models.instance;
-exports.default = Models;
-let models = Models.getInstance();
+const initModels = new InitModels(sequelize);
+let models = initModels.get();
+
 module.exports = { models: models, sequelize: sequelize };
-//# sourceMappingURL=index.js.map

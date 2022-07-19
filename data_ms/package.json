@@ -5,9 +5,8 @@
   "bin": "./index.js",
   "scripts": {
     "start": "node index.js",
-    "ts_compile": "npx tsc",
-    "db_drop": "npx sequelize-cli db:drop",
-    "db_create": "npx sequelize-cli db:create",
+    "db_drop": "npx sequelize-cli db:drop --env 'environment'",
+    "db_create": "npx sequelize-cli db:create --env 'environment'",
     "seed": "npx sequelize-cli db:seed:all --env 'environment'"
   },
   "pkg": {
@@ -25,7 +24,6 @@
   "devDependencies": {
     "sequelize-auto": "^0.8.8",
     "sequelize-auto-migrations": "^1.0.3",
-    "sequelize-cli": "^6.4.1",
-    "typescript": "^4.7.4"
+    "sequelize-cli": "^6.4.1"
   }
 }

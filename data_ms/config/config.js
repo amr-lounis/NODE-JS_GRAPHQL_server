@@ -6,13 +6,13 @@ const environments = {
     username: cnf.db_mysql_username,
     password: cnf.db_mysql_password,
     database: cnf.db_mysql_database,
-    host: cnf.db_mysql_host,
-    port: cnf.db_mysql_port,
+    host:     cnf.db_mysql_host,
+    port:     cnf.db_mysql_port,
     dialect: "mysql",
     define: {
         charset: 'utf8',
         dialectOptions: {
-            collate: cnf.db_mysql_collate
+            collate: 'utf8_general_ci'
         },
         timezone: "+01:00",
         timestamps: true,
@@ -35,7 +35,7 @@ const environments = {
     define: {
         charset: 'utf8',
         dialectOptions: {
-            collate: cnf.db_mysql_collate
+            collate: 'utf8_general_ci'
         },
         timezone: "+01:00",
         timestamps: true,
@@ -59,6 +59,10 @@ const environments = {
     timestamps: true,
     createdAt: "createdAt",
     updatedAt: "updatedAt",
+    // query:{
+    //   raw: true,
+    //   nest: true,
+    // },
     sync: {
         force: false
     },
@@ -73,6 +77,8 @@ const environments = {
 } 
 
 
+const environment = environments['sqlite_env']
+console.log(environment)
 module.exports = {
-  environment : environments['sqlite_env']
+  environment : environment
 }

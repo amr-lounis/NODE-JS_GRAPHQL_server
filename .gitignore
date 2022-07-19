@@ -15,4 +15,5 @@
 *.jpeg
 *.png
 *.exe
-*.sqlite
+/**.sqlite
+database.sqlite

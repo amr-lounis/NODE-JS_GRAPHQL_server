@@ -74,7 +74,7 @@ const environments = {
 
 
 const environment = environments['sqlite_env']
-// console.log(environment)
+console.log('environment : ',environment)
 module.exports = {
   environment : environment
 }

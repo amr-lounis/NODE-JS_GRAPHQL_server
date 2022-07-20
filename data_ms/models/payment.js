@@ -4,7 +4,7 @@ module.exports = function (sequelize, DataTypes) {
         description: {
             type: DataTypes.STRING(255)
         },
-        money_paid: {
+        money_cost: {
             type: DataTypes.DOUBLE
         }
     });

@@ -10,9 +10,6 @@ module.exports = function (sequelize, DataTypes) {
         args_required: {
             type: DataTypes.STRING(255)
         },
-        args_not_null: {
-            type: DataTypes.STRING(255)
-        },
         Attributes_forbidden: {
             type: DataTypes.STRING(255)
         },

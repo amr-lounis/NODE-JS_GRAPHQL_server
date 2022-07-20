@@ -1,8 +1,10 @@
-﻿const {machineId, machineIdSync} = require('node-machine-id') ;
-// console.log(machineIdSync())
-// console.log(machineIdSync({original: true}))
+﻿// console.log = function() {}
+//----------------
+const {machineId, machineIdSync} = require('node-machine-id') ;
+log(machineIdSync())
+log(machineIdSync({original: true}))
 if(machineIdSync({original: true}) != 'b403e901-522d-489b-98e2-fce7a11b88e4'){
-    console.log('This device is not licensed')
+    log('This device is not licensed')
     process.exit()
 }
 
@@ -38,12 +40,12 @@ async function info_GraphqlMiddleware (resolve, root, args, context, info) {
         const operationType = info?.parentType?.name || '';
         const attributes = Object.keys(attributesSelected(info));
         const decoded = my_token.Token_Verifay(context.token);
-        console.log('--------------------------------------------------')
-        console.log('---------- : operationType :',operationType ,' : operationName : ',operationName)
-        console.log('---------- : attributes :',attributes)
-        console.log('---------- : decoded : ',JSON.stringify(decoded))
-        console.log('---------- : args : ',Object.keys(args))
-        console.log('--------------------------------------------------')
+        log('--------------------------------------------------')
+        log(`---------- : operationType :${operationType}: operationName : ${operationName} .`)
+        log(`---------- : attributes :${attributes}`)
+        log(`---------- : decoded :${JSON.stringify(decoded)} `)
+        log(`---------- : args : ${Object.keys(args)}`)
+        log('--------------------------------------------------')
         //----------------------------------------------------------------
         authorization(operationName,decoded,args,attributes)
         //----------------------------------------------------------------
@@ -92,12 +94,12 @@ async function run () {
             },
           ],
         context: (ctx) => {
-            // console.log('-------------------- ApolloServer : context: Object.keys(ctx) : --------  ',Object.keys(ctx.req))
+            log(`-------------------- ApolloServer : context: Object.keys(ctx) : --------  ${Object.keys(ctx) }  `)
             const token = ctx?.req?.headers?.authorization || '';
             return {token:token}
          },
          formatError: (err) => {
-            return err.message;
+            return err// `message : ${err.message} path : ${err.path}`;
         }
     });
     await server.start();
@@ -106,27 +108,27 @@ async function run () {
     useServer({
         schema,
         context: (ctx, msg, args) => {
-            // console.log('-------------------- context useServer : Object.keys(ctx) : --------  ',Object.keys(ctx))
+            log(`-------------------- context useServer : Object.keys(ctx) : --------  ${Object.keys(ctx)} .`)
             const token = ctx?.connectionParams?.Authorization || ''
             const decoded =my_token.Token_Verifay(token) ;
             return {decoded:decoded}; 
         },
         onConnect: async (ctx) => {
-            // console.log('-------------------- onConnect useServer Object.keys(ctx) : ',Object.keys(ctx))
+            log(`-------------------- onConnect useServer Object.keys(ctx) : ${Object.keys(ctx)} .`)
             const token = ctx?.connectionParams?.Authorization || ''
             decoded =my_token.Token_Verifay(token)
-            console.log('-------------------- server : disconnected .')
+            log('-------------------- server : disconnected .')
             if(decoded.id == null) return false; // return false to sertver disconnect ro throw new Error('')
         },
         onDisconnect(ctx, code, reason) {
-            // console.log('-------------------- onDisconnect useServer .')
+            log('-------------------- onDisconnect useServer .')
         },
     },
     wsServer,
     );
 
     const PORT = Number(APOLLO_SERVER_PORT);
-    httpServer.listen(PORT, () => {console.log(
+    httpServer.listen(PORT, () => {log(
     `ws://${APOLLO_SERVER_HOST}:${PORT}${server.graphqlPath}\
      and\
      http://${APOLLO_SERVER_HOST}:${PORT}${server.graphqlPath}`
@@ -136,4 +138,6 @@ async function run () {
 
 run();
 //
-console.log('end process')
+function log(_message){
+    // console.log(_message)
+}

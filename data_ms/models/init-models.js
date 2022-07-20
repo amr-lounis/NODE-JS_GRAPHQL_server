@@ -1,7 +1,5 @@
 var DataTypes = require("sequelize").DataTypes;
 
-var _payment = require("./payment");
-
 var _product_category = require("./product_category");
 var _product_stock = require("./product_stock");
 var _product_unit = require("./product_unit");
@@ -18,12 +16,12 @@ var _user = require("./user");
 
 var _todo = require("./todo");
 
+const  {initDB} = require('./init-db')
+
 class InitModels{
     constructor(sequelize) {
         console.log("------------------------------: InitModels constructor");
         
-        var payment = _payment(sequelize, DataTypes);
-
         var product_category = _product_category(sequelize, DataTypes);
         var product_stock = _product_stock(sequelize, DataTypes);
         var product_unit = _product_unit(sequelize, DataTypes);
@@ -42,12 +40,6 @@ class InitModels{
         //------------------------------------------------------------------------
         role.hasMany(user);
         user.belongsTo(role);
-        //------------------------------------------------------------------------
-        user.hasMany(payment, { foreignKey: "employeeId" });
-        payment.belongsTo(user, { foreignKey: "employeeId" });
-
-        user.hasMany(payment, { foreignKey: "customerId" });
-        payment.belongsTo(user, { foreignKey: "customerId" });
         //------------------------------------------------------------------------
         product_category.hasMany(product_category , { foreignKey: "productCategoryId" });
         product_category.belongsTo(product_category, { foreignKey: "productCategoryId" });
@@ -81,7 +73,6 @@ class InitModels{
         //------------------------------------------------------------------------
 
         this.model = {
-            payment,
             product_category,
             product_stock,
             product_unit,
@@ -108,26 +99,3 @@ class InitModels{
 }
 
 module.exports = InitModels
-
-async function initDB(_model){
-    var notExist = await _model.user.count().then(
-        count => {return (count == 0) ? true : false}
-    );
-    if(notExist){
-        var role_admin = {
-            name:'admin'
-        }
-        var user_admin = {
-            name:'admin',
-            password:'admin'
-        }
-        try {
-            const r = await _model.role.create(role_admin);
-            user_admin.roleId = r.id;
-            const u = await _model.user.create(user_admin);
-            console.log('create admin role and user')
-        } catch (error) {
-            console.log('ERROR : create admin role and user')
-        }
-    }
-}

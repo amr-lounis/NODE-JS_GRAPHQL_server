@@ -9,6 +9,9 @@ module.exports = function (sequelize, DataTypes) {
         },
         validation: {
             type: DataTypes.INTEGER
+        },
+        money_cost: {
+            type: DataTypes.DOUBLE
         }
     });
 };

@@ -4,10 +4,10 @@ const { authorization_controller} = require('../local_library');
 const authorization_create = {
     type: GraphQLString,
     args: {
-        name:{ type: GraphQLString },
-        description: { type: GraphQLString },
-        validation: { type: GraphQLInt },
-        customerId: { type: GraphQLID }
+        operation: { type: GraphQLString },
+        roles: { type: GraphQLString },
+        args_required: { type: GraphQLString },
+        Attributes_forbidden:{ type: GraphQLString },
     },
     resolve: ( root, args, context, info  ) => authorization_controller.create(args,context)
 }
@@ -16,10 +16,10 @@ const authorization_update = {
     type: GraphQLString,
     args: {
         id: { type: GraphQLID },
-        name:{ type: GraphQLString },
-        description: { type: GraphQLString },
-        validation: { type: GraphQLInt },
-        customerId: { type: GraphQLID }
+        operation: { type: GraphQLString },
+        roles: { type: GraphQLString },
+        args_required: { type: GraphQLString },
+        Attributes_forbidden:{ type: GraphQLString },
     },
     resolve: ( root, args, context, info  ) => authorization_controller.update(args,context)
 }

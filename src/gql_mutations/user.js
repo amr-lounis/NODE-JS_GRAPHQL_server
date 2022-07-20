@@ -1,6 +1,6 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
 const GraphQLUpload = require('graphql-upload/GraphQLUpload.js');// add "scalar Upload" in typeDefs
-const {user_controller} = require('../local_library');
+const {user_controller,pubsub} = require('../local_library');
 //----------------------------------------------------------------------------------
 const user_create = {
     type: GraphQLString,
@@ -77,8 +77,14 @@ const user_notification_sender = {
         content: { type: GraphQLString },
     },
     resolve: ( root, args, context, info ) => { 
-        args.sender_id = context.decoded.id;
-        pubsub.publish("user_notification_sender", args );
+        var payload = {}
+        // payload.sender_id   = context.decoded.id;
+        payload.sender_id   = args.thisUserId;
+        payload.receiver_id = args.receiver_id;
+        payload.title       = args.title;
+        payload.content     = args.content;
+
+        pubsub.publish("user_notification_sender", payload );
         return 'ok';
     }
 }

@@ -1,8 +1,8 @@
 const my_files = require('./my_files');
 const { models } = require("../models");
 const {user,role} = models ;
-//args.thisUserId
 
+//args.thisUserId
 class user_controller{
     constructor() {
         console.log("-----------: user controller constructor");

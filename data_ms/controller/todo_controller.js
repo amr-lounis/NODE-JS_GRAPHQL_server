@@ -17,16 +17,8 @@ class todo_controller{
     //args.thisUserId = decoded.id;
     create(args,context){
         return new Promise((resolve, reject) => {
-            todo.create({
-            attributes: context.attributes,
-            raw: true,
-            nest: true,
-            name: args.name,
-            description: args.description,
-            validation: args.validation,
-            employeeId: args.thisUserId,
-            customerId: args.customerId
-        }).then(data => {
+            todo.create(args)
+            .then(data => {
                 console.log('create new id : ' + data.id + ' : OK')
                 resolve(data.id);
             }).catch(function (err) {

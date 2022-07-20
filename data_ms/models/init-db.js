@@ -1,34 +1,34 @@
 async function initDB(_model){
 
     await _model.role.count().then(async (count) => {
-        console.log('------------ : roles count : ',count)
+        console.log('-----------: roles count : ',count)
         if(count == 0 ){
             await _model.role.create({
                 id:1,
                 name:'admin'
             });
-            console.log('------------ : role admin created')
+            console.log('-----------: role admin created')
     }});
 
     await _model.user.count().then( async (count) => {
-        console.log('------------ : users count : ',count)
+        console.log('-----------: users count : ',count)
         if(count == 0 ){
             await _model.user.create({
                 id:1,
                 name:'admin',
                 roleId:1
             });
-            console.log('------------ : user admin created')
+            console.log('-----------: user admin created')
     }});
 
     await _model.authorization.count().then( (count) => {
-        console.log('------------ : authorizations count : ',count)
+        console.log('-----------: authorizations count : ',count)
         if(count == 0 ){
             const arrayAuthorization = initArrayAuthorization()
             arrayAuthorization.forEach(async (_authorization)=>{
                 await _model.authorization.create(_authorization)
             })
-            console.log('------------ : authorizations created')
+            console.log('-----------: authorizations created')
     }});
 
 }

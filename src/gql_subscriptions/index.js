@@ -28,7 +28,7 @@ user_notification_receiver = {
     resolve: (payload, args, context, info) => {
         return new Promise((resolve, reject) => {
             try {
-                console.log("notification_receiver : payload:  =>  " + JSON.stringify(payload) );
+                console.log("user_notification_receiver : payload:  =>  " + JSON.stringify(payload) );
                 resolve(payload);
             } catch (error) {
                 reject(new Error('---- ERROR : subscription .'));

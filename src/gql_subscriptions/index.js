@@ -1,5 +1,42 @@
-const notification_receiver = require('./notification_receiver')
-
+const { GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt,GraphQLObjectType } = require('graphql')
+const { withFilter } = require('graphql-subscriptions');
+const {pubsub} = require('../local_library');
+//----------------------------------------------------------------------------------
+const user_notification_type = {
+    name: 'user_notification_type',
+    fields: () => ({
+        sender_id:{ type: GraphQLInt },
+        receiver_id:{ type: GraphQLInt },
+        title :{ type: GraphQLString },
+        content : { type: GraphQLString },
+    })
+}
+//----------------------------------------------------------------------------------
+user_notification_receiver = {
+    type:  new GraphQLObjectType(user_notification_type),
+    args: { },
+    subscribe: withFilter(
+        () => pubsub.asyncIterator('user_notification_sender'),
+        (payload, args, context, info) => {
+            try {
+                return (context.decoded.id == payload.receiver_id); // true send data // false non send data
+            } catch (error) {
+                return false;
+            }
+        },
+    ),
+    resolve: (payload, args, context, info) => {
+        return new Promise((resolve, reject) => {
+            try {
+                console.log("notification_receiver : payload:  =>  " + JSON.stringify(payload) );
+                resolve(payload);
+            } catch (error) {
+                reject(new Error('---- ERROR : subscription .'));
+            }
+        })
+    }
+}
+//----------------------------------------------------------------------------------
 module.exports = {
-    notification_receiver
+    user_notification_receiver
 }

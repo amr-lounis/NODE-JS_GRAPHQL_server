@@ -1,6 +1,6 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
 const GraphQLUpload = require('graphql-upload/GraphQLUpload.js');// add "scalar Upload" in typeDefs
-const {todo_controller} = require('../../local_library');
+const {todo_controller} = require('../local_library');
 //----------------------------------------------------------------------------------
 const todo_create = {
     type: GraphQLString,
@@ -25,7 +25,7 @@ const todo_update = {
     resolve: ( root, args, context, info  ) => todo_controller.update(args,context)
 }
 //----------------------------------------------------------------------------------
-const todo_delete = module.exports = {
+const todo_delete = {
     type: GraphQLString,
     args: {
         id: {type: GraphQLID }

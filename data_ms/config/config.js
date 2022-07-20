@@ -59,10 +59,6 @@ const environments = {
     timestamps: true,
     createdAt: "createdAt",
     updatedAt: "updatedAt",
-    // query:{
-    //   raw: true,
-    //   nest: true,
-    // },
     sync: {
         force: false
     },
@@ -78,7 +74,7 @@ const environments = {
 
 
 const environment = environments['sqlite_env']
-console.log(environment)
+// console.log(environment)
 module.exports = {
   environment : environment
 }

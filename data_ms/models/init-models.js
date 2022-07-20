@@ -80,8 +80,6 @@ class InitModels{
         sold_product.belongsTo(product);// lakin kol stok yochir ila produit wahad
         //------------------------------------------------------------------------
 
-        sequelize.sync({ force: false });
-
         this.model = {
             payment,
             product_category,
@@ -95,7 +93,13 @@ class InitModels{
             user,
             todo
         };
-        console.log(this.model)
+
+        //User.sync() - This creates the table if it doesn't exist (and does nothing if it already exists)
+        //User.sync({ force: true }) - This creates the table, dropping it first if it already existed
+        //User.sync({ alter: true }) - This checks what is the current state of the table in the
+        sequelize.sync().then(() => {
+            initDB(this.model)
+        });
     }
 
     get(){
@@ -104,3 +108,26 @@ class InitModels{
 }
 
 module.exports = InitModels
+
+async function initDB(_model){
+    var notExist = await _model.user.count().then(
+        count => {return (count == 0) ? true : false}
+    );
+    if(notExist){
+        var role_admin = {
+            name:'admin'
+        }
+        var user_admin = {
+            name:'admin',
+            password:'admin'
+        }
+        try {
+            const r = await _model.role.create(role_admin);
+            user_admin.roleId = r.id;
+            const u = await _model.user.create(user_admin);
+            console.log('create admin role and user')
+        } catch (error) {
+            console.log('ERROR : create admin role and user')
+        }
+    }
+}

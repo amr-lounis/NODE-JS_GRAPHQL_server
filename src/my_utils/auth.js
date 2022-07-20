@@ -1,6 +1,6 @@
 class AuthHelper{
     constructor() {
-        console.log("-----------: auth_helper class constructor");
+        console.log("-----------: AuthHelper class constructor");
     }
 
     _arraysIntersection(a1,a2){
@@ -72,11 +72,10 @@ function authorization(operationName,decode,args,attributs){
     _arrayOfArraysAuth.forEach((_auth)=> {
         //------------------------------------------------------- test operationName
         if(_auth[0] == operationName){  
-            console.log('------- authorization for operationName : ',operationName)
+            console.log('------- authorization : ',_auth)
             //-------------------------------------------------- test roles
             if(_auth[1] != null && _auth[1] != ''){
                 const roles = _auth[1].split(',')
-                console.log(' roles authorized is : ',roles)
                 authHelper.role_authorized(decode.role,roles)
             }else{
                 console.log(' authorized for all users .')
@@ -84,7 +83,6 @@ function authorization(operationName,decode,args,attributs){
             //-------------------------------------------------- test args
             if(_auth[2] != null && _auth[2] != ''){
                 const args_required = _auth[2].split(',')
-                console.log(' args required is : ',args_required)
                 authHelper.args_required(args,args_required)
             }else{
                 console.log(' authorized for all args .')
@@ -92,7 +90,6 @@ function authorization(operationName,decode,args,attributs){
             //-------------------------------------------------- test attributes_forbidden
             if(_auth[3] != null && _auth[3] != ''){
                 const attributes_forbidden = _auth[3].split(',')
-                console.log(' attributes forbidden is : ',args_required)
                 authHelper.attributes_forbidden(attributs,attributes_forbidden)
             }else{
                 console.log(' authorized for all attributes .')

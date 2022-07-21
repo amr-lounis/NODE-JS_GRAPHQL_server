@@ -1,5 +1,5 @@
 const {GraphQLObjectType,GraphQLID,GraphQLNonNull,GraphQLString,GraphQLList,GraphQLInt } = require('graphql')
-const {todo_controller} = require('../local_library');
+const {todo_controller} = require("data_ms")
 //----------------------------------------------------------------------------------
 const todo_type = {
     name: 'todo_type',

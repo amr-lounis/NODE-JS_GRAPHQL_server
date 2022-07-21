@@ -1,5 +1,5 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
-const { authorization_controller} = require('../local_library');
+const { authorization_controller} = require("data_ms")
 //----------------------------------------------------------------------------------
 const authorization_create = {
     type: GraphQLString,
@@ -26,9 +26,7 @@ const authorization_update = {
 //----------------------------------------------------------------------------------
 const authorization_delete = module.exports = {
     type: GraphQLString,
-    args: {
-        id: {type: GraphQLID }
-    },
+    args: { id: {type: GraphQLID } },
     resolve: ( root, args, context, info  ) => authorization_controller.delete(args,context)
 }
 //----------------------------------------------------------------------------------

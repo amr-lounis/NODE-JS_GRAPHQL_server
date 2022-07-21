@@ -25,7 +25,7 @@ const { WebSocketServer } = require('ws')
 
 //-------------- local library
 const schema = require('./gql_schema');
-const {my_token,authorization} = require('./local_library')
+const {my_token,authorization} = require('./my_utils')
 
 //-------------- config
 const graphql_path = '/graphql';

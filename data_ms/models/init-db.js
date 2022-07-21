@@ -34,30 +34,6 @@ async function initDB(_model){
 }
 
 
-var _arrayOfArraysAuth=[
-    //operation , roles, args_required , args_not_null , Attributes_forbidden
-    ['execute_cmd','admin','command',null],
-
-    ['todo_get','admin,employee,','id',null],
-    ['todo_images_get','admin,employee,','id',null],
-    ['todo_create','admin,employee,','id',null],
-    ['todo_update','admin,employee,','id',null],
-    ['todo_delete','admin','id','id',null],
-    ['todo_image_upload','admin,employee','id,file',null],
-    ['todo_image_delete','admin,employee','id,fileNmae',null],
-    
-    ['user_get','admin',null,null],
-    ['user_get','employee',null,'password'],
-
-    ['user_signin','admin,employee,anonymous','name,password',null],
-    ['user_create','admin,employee,anonymous,','name,password',null],
-    ['user_update','admin,employee,','id',null],
-    ['user_delete','admin','id',null],
-    ['user_image_upload','admin,employee','id,file',null],
-    ['user_image_delete','admin,employee','id,fileNmae',null],
-    ['notification_sender','admin,employee','receiver_id,title,content',null]
-]
-
 function initArrayAuthorization(){
     arrayAuthorization = []
     _arrayOfArraysAuth.forEach((_array)=> {
@@ -70,6 +46,31 @@ function initArrayAuthorization(){
     })
     return  arrayAuthorization
 }
+
+
+var _arrayOfArraysAuth=[
+    //operation , roles, args_required , Attributes_forbidden
+    ['execute_cmd','admin','command',null],
+
+    ['todo_get','admin,employee',null,null],
+    ['todo_create','admin,employee','name',null],
+    ['todo_update','admin,employee','id',null],
+    ['todo_delete','admin','id','id',null],
+    ['todo_images_get','admin,employee','id',null],
+    ['todo_image_upload','admin,employee','id,file',null],
+    ['todo_image_delete','admin,employee','id,fileNmae',null],
+    
+    ['user_get','admin',null,null],
+    ['user_get','employee',null,'password'],
+    ['user_signin','admin,employee,anonymous','name,password',null],
+    ['user_create','admin,employee,anonymous','name,password',null],
+    ['user_update','admin,employee','id',null],
+    ['user_delete','admin','id',null],
+    ['user_image_upload','admin,employee','id,file',null],
+    ['user_image_delete','admin,employee','id,fileNmae',null],
+    ['notification_sender','admin,employee','receiver_id,title,content',null]
+]
+
 
 module.exports = {initDB}
 

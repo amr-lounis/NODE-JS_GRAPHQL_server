@@ -1,5 +1,5 @@
 const {GraphQLObjectType,GraphQLID,GraphQLNonNull,GraphQLString,GraphQLList,GraphQLInt } = require('graphql')
-const {authorization_controller} = require('../local_library');
+const {authorization_controller} = require("data_ms")
 //----------------------------------------------------------------------------------
 const authorization_type = {
     name: 'authorization_type',

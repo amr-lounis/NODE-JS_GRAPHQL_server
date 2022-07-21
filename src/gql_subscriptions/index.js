@@ -1,6 +1,6 @@
 const { GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt,GraphQLObjectType } = require('graphql')
 const { withFilter } = require('graphql-subscriptions');
-const {pubsub} = require('../local_library');
+const {pubsub} = require('../my_utils');
 //----------------------------------------------------------------------------------
 const user_notification_type = {
     name: 'user_notification_type',

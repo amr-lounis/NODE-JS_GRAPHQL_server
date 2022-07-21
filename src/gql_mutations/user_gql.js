@@ -1,6 +1,6 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
 const GraphQLUpload = require('graphql-upload/GraphQLUpload.js');// add "scalar Upload" in typeDefs
-const {user_controller,pubsub} = require('../local_library');
+const {user_controller,pubsub} = require("data_ms")
 //----------------------------------------------------------------------------------
 const user_create = {
     type: GraphQLString,

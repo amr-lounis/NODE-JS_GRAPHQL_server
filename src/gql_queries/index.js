@@ -1,8 +1,8 @@
-const authorization = require('./authorization')
-const todo = require('./todo')
-const user = require('./user')
+const authorization_gql = require('./authorization_gql')
+const todo_gql = require('./todo_gql')
+const user_gql = require('./user_gql')
 module.exports = {
-    ...authorization,
-    ...todo,
-    ...user
+    ...authorization_gql,
+    ...todo_gql,
+    ...user_gql
 }

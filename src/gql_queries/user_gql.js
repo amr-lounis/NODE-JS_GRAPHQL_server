@@ -1,5 +1,5 @@
 const {GraphQLObjectType,GraphQLID,GraphQLNonNull,GraphQLString,GraphQLList,GraphQLInt } = require('graphql')
-const {user_controller} = require('../local_library');
+const {user_controller}= require("data_ms")
 //----------------------------------------------------------------------------------
 const user_type = {
     name: 'user_type',

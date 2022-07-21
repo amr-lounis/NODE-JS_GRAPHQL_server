@@ -1,4 +1,3 @@
-const my_files = require('./my_files')
 const { models } = require("../models");
 const {authorization} = models
 
@@ -7,6 +6,7 @@ class authorization_controller{
     constructor() {
         console.log("-----------: authorization controller constructor");
     }
+    
     async throwNotExist(id){
         var exist = await authorization.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false});
         if( !exist ) {
@@ -14,6 +14,7 @@ class authorization_controller{
             throw new Error(`not exist authorization.id='${id}' .`);
         }
     }
+
     create(args,context){
         return new Promise((resolve, reject) => {
             authorization.create(args)
@@ -71,10 +72,36 @@ class authorization_controller{
                 offset:args.offset,
                 limit:args.limit
             }).then(data => {
+                var l = []
+                data.forEach(element => {
+                    l.push([element.operation,element.roles,element.args_required,element.Attributes_forbidden])
+                });
+                console.log('----------- | ',l)
                 resolve(data);
             }).catch(err => {
                 reject('error get');
             });
+        })
+    }
+
+     get_authorization(){
+        return new Promise((resolve, reject) => {
+            authorization.findAll({raw: true,nest: true})
+            .then(data => {
+            var _authorization = []
+            data.forEach(element => {
+                _authorization.push([
+                    element.operation,
+                    element.roles,
+                    element.args_required,
+                    element.Attributes_forbidden
+                ])
+            });
+            console.log('----------- | ',_authorization)
+            resolve(_authorization);
+        }).catch(err => {
+            reject('error get');
+        });
         })
     }
 }

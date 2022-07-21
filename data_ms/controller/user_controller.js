@@ -4,65 +4,68 @@ const {user,role} = models ;
 
 //args.thisUserId
 class user_controller{
+    //---------------------------------------------------------------------
     constructor() {
         console.log("-----------: user controller constructor");
     }
-
-    async throwNotExist(id){
-        var exist = await user.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false});
-        if( !exist ){
-            // console.log('throwNotExist id values : ',id)
-            throw new Error(`not exist user.id='${id}' .`);
-        }
+    //---------------------------------------------------------------------
+    async Exist(id){
+        return await user.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false}).catch((err)=>{return false});
     }
-
+    //---------------------------------------------------------------------
     create(args,context){
         return new Promise((resolve, reject) => {
-            user.create(args).then(data => {
-                console.log('create new id : ' + data.id + ' : OK')
+            user.create(args)
+            .then(data => {
                 resolve(data.id);
-            }).catch(function (err) {
-                reject(err.message);
+            })
+            .catch(function (err) {
+                reject(err);
             });
         })
     }
-
-    delete(args,context){
-        return new Promise((resolve, reject) => {
-            user.destroy({ where: { id: args.id } }).then(data => {
-                console.log({ data: data });
-                if (data >= 1) resolve('user deleted');
-                else reject('user not exist');
-            }).catch(function (err) {
-                reject('cant user deleted');
-            });
+    //---------------------------------------------------------------------
+    delete(args,console){
+        return new Promise(async (resolve, reject) => {
+            if(! await this.Exist(args.id))reject(new Error('ERROR : NOT EXIST'))
+            else{
+                user.destroy({ where: { id: args.id } }).then(data => {
+                    if (data >= 1) resolve('DELETED');
+                    else reject(new Error('ERROR : CANNOT DELETE'));
+                }).catch(function (err) {
+                    reject(err);
+                });
+            };
         })
     }
-
-    update(args,context){
-        return new Promise((resolve, reject) => {
-            var id = args.id;
-            delete args['id'];
-            user.update(args, { where: { id: id } }
-            ).then(data => {
-                console.log({ data: data });
-                if (data >= 1) resolve('user updated');
-                else reject('user not exist');
-            }).catch(function (err) {
-                reject('cant user updated');
-            });
+    //---------------------------------------------------------------------
+    update(args,console){
+        return new Promise(async (resolve, reject) => {
+            if(! await this.Exist(args.id))reject(new Error('ERROR : NOT EXIST'))
+            else{
+                var id = args.id;
+                delete args['id'];
+                //-------------------
+                user.update(args, { where: { id: id } }
+                ).then(data => {
+                    if (data >= 1) resolve('UPDATED');
+                    else reject(new Error('ERROR : CANNOT UPDATED'));
+                }).catch(function (err) {
+                    reject(err);
+                });
+           };
         })
     }
-
+    //---------------------------------------------------------------------
     getWhere(args,context){
-        // --------------------------------------------------------------------
+        //-----------------
         var _Object = {}
         if( args.hasOwnProperty('id') ) _Object.id = args.id;
         
         if( ! args.hasOwnProperty('offset') ) args.offset= 0;
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;
-        // -------------------------------------------------------------------- 
+        //----------------- 
         
         return new Promise((resolve, reject) => {
             user.findAll({
@@ -74,12 +77,27 @@ class user_controller{
                 limit:args.limit
             }).then(data => {
                 resolve(data);
-            }).catch(err => {
-                reject('error');
+            }).catch((err) => {
+                reject(err);
             });
         })
     }
-
+    //---------------------------------------------------------------------
+    async image_delete(args,context){
+        if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
+        else{ my_files.FileDelete('user',args.id,args.fileNmae)}
+    } 
+    //---------------------------------------------------------------------
+    async image_upload(args,context){
+        if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
+        else{return my_files.image_upload(args.file,'user',args.id)}
+    }
+    //---------------------------------------------------------------------
+    async images_get(args,context){
+        if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
+        else{ return my_files.UrlListGet('user',args.id)}
+    } 
+    //---------------------------------------------------------------------
     signin(args,context){
         return new Promise((resolve, reject) => {
             user.findOne({
@@ -88,36 +106,13 @@ class user_controller{
                 raw: true,
                 nest: true,
             }).then(data => {
-                console.log('------------------- signin');
-                if (data) {
-                    resolve(data);
-                }
-                else {
-                    throw new Error('error signin');
-                }
-            }).catch(function (err) {
-                console.log(err.message)
-                reject(err.message);
+                if (data) resolve(data);
+                else reject(new Error('error signin'));
+            }).catch((err) => {
+                reject(err);
             });
         });
     }
-
-    async image_delete(args,context){
-        await this.throwNotExist(args.id)
-        my_files.FileDelete('user',args.id,args.fileNmae)
-        return "ok";
-    } 
-
-    async image_upload(args,context){
-        console.log('args:',args)
-        await this.throwNotExist(args.id)
-        return my_files.image_upload(args.file,'user',args.id)
-    }
-    
-    async images_get(args,context){
-        await this.throwNotExist(args.id)
-        return my_files.UrlListGet('user',args.id)
-    } 
 }
 
 module.exports = new user_controller()

@@ -72,8 +72,11 @@ const environments = {
   }
 } 
 
+var env = 'sqlite_env'
+if(cnf.db_selected == 0 ) var env = 'sqlite_env'
+else if(cnf.db_selected == 1 ) var env = 'mysql_env'
 
-const environment = environments['sqlite_env']
+const environment = environments[env]
 console.log('environment : ',environment)
 module.exports = {
   environment : environment

@@ -20,7 +20,7 @@ const  {initDB} = require('./init-db')
 
 class InitModels{
     constructor(sequelize) {
-        console.log("------------------------------: InitModels constructor");
+        console.log("-----------: InitModels constructor");
         
         var product_category = _product_category(sequelize, DataTypes);
         var product_stock = _product_stock(sequelize, DataTypes);

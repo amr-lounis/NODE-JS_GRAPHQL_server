@@ -10,5 +10,7 @@ module.exports = {
     db_sqlite_password: "",
     db_sqlite_storage: 'database.sqlite',
 
+    db_selected: 0,
+
     IMAGES_DIR : './files/images/',
 }

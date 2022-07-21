@@ -1,67 +1,75 @@
+const { Op } = require("sequelize");
 const { models } = require("../models");
 const {authorization} = models
 
 //args.thisUserId = decoded.id;
 class authorization_controller{
+    //---------------------------------------------------------------------
     constructor() {
         console.log("-----------: authorization controller constructor");
     }
-    
-    async throwNotExist(id){
-        var exist = await authorization.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false});
-        if( !exist ) {
-            // console.log('throwNotExist id values : ',id)
-            throw new Error(`not exist authorization.id='${id}' .`);
-        }
+    //---------------------------------------------------------------------
+    async Exist(id){
+        return await authorization.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false}).catch((err)=>{return false});
     }
-
+    //---------------------------------------------------------------------
     create(args,context){
         return new Promise((resolve, reject) => {
             authorization.create(args)
             .then(data => {
-                console.log('create new id : ' + data.id + ' : OK')
                 resolve(data.id);
             })
             .catch(function (err) {
-                reject(err.message);
+                reject(err);
             });
         })
     }
-
+    //---------------------------------------------------------------------
     delete(args,console){
-        return new Promise((resolve, reject) => {
-            authorization.destroy({ where: { id: args.id } }).then(data => {
-                if (data >= 1) resolve('deleted');
-                else reject('user not exist');
-            }).catch(function (err) {
-                reject('cant user deleted');
-            });
+        return new Promise(async (resolve, reject) => {
+            if(! await this.Exist(args.id))reject(new Error('ERROR : NOT EXIST'))
+            else{
+                authorization.destroy({ where: { id: args.id } }).then(data => {
+                    if (data >= 1) resolve('DELETED');
+                    else reject(new Error('ERROR : CANNOT DELETE'));
+                }).catch(function (err) {
+                    reject(err);
+                });
+            };
         })
     }
-
+    //---------------------------------------------------------------------
     update(args,console){
-        return new Promise((resolve, reject) => {
-            var id = args.id;
-            delete args['id'];
-            authorization.update(args, { where: { id: id } }
-            ).then(data => {
-                if (data >= 1) resolve('updated');
-                else reject('not exist');
-            }).catch(function (err) {
-                reject('cant updated');
-            });
+        return new Promise(async (resolve, reject) => {
+            if(! await this.Exist(args.id))reject(new Error('ERROR : NOT EXIST'))
+            else{
+                var id = args.id;
+                delete args['id'];
+                //-------------------
+                authorization.update(args, { where: { id: id } }
+                ).then(data => {
+                    if (data >= 1) resolve('UPDATED');
+                }).catch(function (err) {
+                    reject(err);
+                });
+           };
         })
     }
-
+    //---------------------------------------------------------------------
     getWhere(args,context){
-        // --------------------------------------------------------------------
+        //-----------------
         var _Object = {}
         if( args.hasOwnProperty('id') ) _Object.id = args.id;
 
         if( ! args.hasOwnProperty('offset') ) args.offset= 0;
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;
-        // -------------------------------------------------------------------- 
+
+        _Object.createdAt= {
+            $gt: timeStart,
+            $lt: timeEnd
+        }
+        //----------------- 
 
         return new Promise((resolve, reject) => {
             authorization.findAll({
@@ -72,38 +80,32 @@ class authorization_controller{
                 offset:args.offset,
                 limit:args.limit
             }).then(data => {
-                var l = []
-                data.forEach(element => {
-                    l.push([element.operation,element.roles,element.args_required,element.Attributes_forbidden])
-                });
-                console.log('----------- | ',l)
                 resolve(data);
             }).catch(err => {
-                reject('error get');
+                reject(err);
             });
         })
     }
-
-     get_authorization(){
+    //---------------------------------------------------------------------
+     get_authorization_array(){
         return new Promise((resolve, reject) => {
             authorization.findAll({raw: true,nest: true})
             .then(data => {
             var _authorization = []
             data.forEach(element => {
                 _authorization.push([
-                    element.operation,
-                    element.roles,
-                    element.args_required,
-                    element.Attributes_forbidden
-                ])
+                     element.operation,
+                     element.roles, 
+                     element.args_required,
+                     element.Attributes_forbidden ])
             });
-            console.log('----------- | ',_authorization)
             resolve(_authorization);
         }).catch(err => {
-            reject('error get');
+            reject(err);
         });
         })
     }
+    //---------------------------------------------------------------------
 }
 
 module.exports = new authorization_controller()

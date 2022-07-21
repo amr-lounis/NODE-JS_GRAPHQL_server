@@ -10,7 +10,10 @@ module.exports = function (sequelize, DataTypes) {
         validation: {
             type: DataTypes.INTEGER
         },
-        money_cost: {
+        money_costs: {
+            type: DataTypes.DOUBLE
+        },
+        money_received: {
             type: DataTypes.DOUBLE
         }
     });

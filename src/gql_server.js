@@ -99,7 +99,7 @@ async function run () {
             return {token:token}
          },
          formatError: (err) => {
-            return err// `message : ${err.message} path : ${err.path}`;
+            return `message : ${err.message}`;
         }
     });
     await server.start();

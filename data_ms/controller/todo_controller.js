@@ -2,58 +2,63 @@ const my_files = require('./my_files')
 const { models } = require("../models");
 const {todo} = models
 
+//args.thisUserId = decoded.id;
 class todo_controller{
+    //---------------------------------------------------------------------
     constructor() {
         console.log("-----------: todo controller constructor");
     }
-    async throwNotExist(id){
-   
-        var exist = await todo.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false});
-        if( !exist ) {
-            // console.log('throwNotExist id values : ',id)
-            throw new Error(`not exist todo.id='${id}' .`);
-        }
+    //---------------------------------------------------------------------
+    async Exist(id){
+        return await todo.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false}).catch((err)=>{return false});
     }
-    //args.thisUserId = decoded.id;
+    //---------------------------------------------------------------------
     create(args,context){
         return new Promise((resolve, reject) => {
             todo.create(args)
             .then(data => {
-                console.log('create new id : ' + data.id + ' : OK')
                 resolve(data.id);
-            }).catch(function (err) {
-                reject(err.message);
+            })
+            .catch(function (err) {
+                reject(err);
             });
         })
     }
-
+    //---------------------------------------------------------------------
     delete(args,console){
-        return new Promise((resolve, reject) => {
-            todo.destroy({ where: { id: args.id } }).then(data => {
-                if (data >= 1) resolve('deleted');
-                else reject('user not exist');
-            }).catch(function (err) {
-                reject('cant user deleted');
-            });
+        return new Promise(async (resolve, reject) => {
+            if(! await this.Exist(args.id))reject(new Error('ERROR : NOT EXIST'))
+            else{
+                todo.destroy({ where: { id: args.id } }).then(data => {
+                    if (data >= 1) resolve('DELETED');
+                    else reject(new Error('ERROR : CANNOT DELETE'));
+                }).catch(function (err) {
+                    reject(err);
+                });
+            };
         })
     }
-
+    //---------------------------------------------------------------------
     update(args,console){
-        return new Promise((resolve, reject) => {
-            var id = args.id;
-            delete args['id'];
-            todo.update(args, { where: { id: id } }
-            ).then(data => {
-                if (data >= 1) resolve('updated');
-                else reject('not exist');
-            }).catch(function (err) {
-                reject('cant updated');
-            });
+        return new Promise(async (resolve, reject) => {
+            if(! await this.Exist(args.id))reject(new Error('ERROR : NOT EXIST'))
+            else{
+                var id = args.id;
+                delete args['id'];
+                //-------------------
+                todo.update(args, { where: { id: id } }
+                ).then(data => {
+                    if (data >= 1) resolve('UPDATED');
+                    else reject(new Error('ERROR : CANNOT UPDATED'));
+                }).catch(function (err) {
+                    reject(err);
+                });
+           };
         })
     }
-
+    //---------------------------------------------------------------------
     getWhere(args,context){
-        // --------------------------------------------------------------------
+        //-----------------
         var _Object = {}
         if( args.hasOwnProperty('id') ) _Object.id = args.id;
         if( args.hasOwnProperty('employeeId'))  _Object.employeeId=args.employeeId;
@@ -62,7 +67,7 @@ class todo_controller{
         if( ! args.hasOwnProperty('offset') ) args.offset= 0;
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;
-        // -------------------------------------------------------------------- 
+        //------------------
 
         return new Promise((resolve, reject) => {
             todo.findAll({
@@ -79,22 +84,22 @@ class todo_controller{
             });
         })
     }
-
+    //---------------------------------------------------------------------
     async image_delete(args,context){
-        await this.throwNotExist(args.id)
-        my_files.FileDelete('todo',args.id,args.fileNmae)
-        return "ok";
+        if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
+        else{ my_files.FileDelete('todo',args.id,args.fileNmae)}
     } 
-
+    //---------------------------------------------------------------------
     async image_upload(args,context){
-        await this.throwNotExist(args.id)
-        return my_files.image_upload(args.file,'todo',args.id)
+        if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
+        else{return my_files.image_upload(args.file,'todo',args.id)}
     }
-    
+    //---------------------------------------------------------------------
     async images_get(args,context){
-        await this.throwNotExist(args.id)
-        return my_files.UrlListGet('todo',args.id)
+        if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
+        else{ return my_files.UrlListGet('todo',args.id)}
     } 
+    //---------------------------------------------------------------------
 }
 
 module.exports = new todo_controller()

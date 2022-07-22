@@ -61,7 +61,20 @@ class user_controller{
         //-----------------
         var _Object = {}
         if( args.hasOwnProperty('id') ) _Object.id = args.id;
-        
+        //-----------------
+        if(
+            args.hasOwnProperty('startYear') 
+            && args.hasOwnProperty('startMonth')
+            && args.hasOwnProperty('startDate') 
+            && args.hasOwnProperty('endYear') 
+            && args.hasOwnProperty('endMonth') 
+            && args.hasOwnProperty('endDate')  
+        )try {
+            const start =new Date(args.startYear, args.startMonth, args.startDate)
+            const end  = new Date(args.endYear  ,args.endMonth   , args.endDate  ) 
+            _Object.createdAt= {[Op.between]: [start, end]}
+        } catch (error) { console.log('------- error date .')}
+        //-----------------
         if( ! args.hasOwnProperty('offset') ) args.offset= 0;
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;

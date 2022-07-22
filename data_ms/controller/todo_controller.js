@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const my_files = require('./my_files')
 const { models } = require("../models");
 const {todo} = models
@@ -63,7 +64,20 @@ class todo_controller{
         if( args.hasOwnProperty('id') ) _Object.id = args.id;
         if( args.hasOwnProperty('employeeId'))  _Object.employeeId=args.employeeId;
         if( args.hasOwnProperty('customerId')) _Object.customerId = args.customerId;
-        
+        //-----------------
+        if(
+               args.hasOwnProperty('startYear') 
+            && args.hasOwnProperty('startMonth')
+            && args.hasOwnProperty('startDate') 
+            && args.hasOwnProperty('endYear') 
+            && args.hasOwnProperty('endMonth') 
+            && args.hasOwnProperty('endDate')  
+         )try {
+             const start =new Date(args.startYear, args.startMonth, args.startDate)
+             const end  = new Date(args.endYear  ,args.endMonth   , args.endDate  ) 
+            _Object.createdAt= {[Op.between]: [start, end]}
+         } catch (error) { console.log('------- error date .')}
+        //-----------------
         if( ! args.hasOwnProperty('offset') ) args.offset= 0;
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;

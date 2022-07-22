@@ -46,18 +46,11 @@ class AuthHelper{
     }
 }
 var authHelper = new AuthHelper();
-// -----------------------------------  array Of array : authorization
-var _arrayOfArraysAuth = [];
-authorization_controller.get_authorization_array()
-.then((data)=>{
-    _arrayOfArraysAuth = data;
-})
-.catch((err)=>{
-    console.log('error  : authorization_controller.get_authorization_array()')
-})
 //-----------------------------------
 function authorization(operationName,decode,args,attributs){
-    _arrayOfArraysAuth.forEach((_auth)=> {
+    authorization_controller
+    .authorization_array
+    .forEach((_auth)=> {
         //------------------------------------------------------- test operationName
         if(_auth[0] == operationName){  
             console.log('------- authorization : ',_auth)

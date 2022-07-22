@@ -78,7 +78,7 @@ const user_notification_sender = {
     },
     resolve: ( root, args, context, info ) => { 
         var payload = {}
-        // payload.sender_id   = context.decoded.id;
+        // payload.sender_id   = context.decoded.id = args.thisUserId
         payload.sender_id   = args.thisUserId;
         payload.receiver_id = args.receiver_id;
         payload.title       = args.title;

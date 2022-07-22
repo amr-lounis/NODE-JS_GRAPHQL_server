@@ -17,8 +17,19 @@ const user_get = {
    type: new GraphQLList( new GraphQLObjectType(user_type) ),
    args: {
        id:{ type: GraphQLInt },
+       createdAt:{ type: GraphQLString },
+       updatedAt:{ type: GraphQLString },
+
        offset: { type: GraphQLInt },
-       limit: {type: GraphQLInt }
+       limit: {type: GraphQLInt },
+
+       startYear:{type: GraphQLInt },
+       startMonth:{type: GraphQLInt },
+       startDate:{type: GraphQLInt },
+   
+       endYear:{type: GraphQLInt },
+       endMonth:{type: GraphQLInt },
+       endDate:{type: GraphQLInt }
    },
    resolve: ( root, args, context, info  ) => user_controller.getWhere(args,context)
 }

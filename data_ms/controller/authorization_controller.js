@@ -1,12 +1,19 @@
-const { Op } = require("sequelize");
 const { models } = require("../models");
 const {authorization} = models
 
 //args.thisUserId = decoded.id;
 class authorization_controller{
     //---------------------------------------------------------------------
+    authorization_array =[]
     constructor() {
         console.log("-----------: authorization controller constructor");
+        this._get_authorization_array().then((data)=>{
+            this.authorization_array = data;
+            console.log(this.authorization_array)
+        })
+        .catch((err)=>{
+            console.log("ERROR : authorization_array : ",err.message)
+        })
     }
     //---------------------------------------------------------------------
     async Exist(id){
@@ -64,13 +71,7 @@ class authorization_controller{
         if( ! args.hasOwnProperty('offset') ) args.offset= 0;
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;
-
-        _Object.createdAt= {
-            $gt: timeStart,
-            $lt: timeEnd
-        }
         //----------------- 
-
         return new Promise((resolve, reject) => {
             authorization.findAll({
                 attributes: context.attributes,
@@ -87,7 +88,7 @@ class authorization_controller{
         })
     }
     //---------------------------------------------------------------------
-     get_authorization_array(){
+     _get_authorization_array(){
         return new Promise((resolve, reject) => {
             authorization.findAll({raw: true,nest: true})
             .then(data => {

@@ -21,8 +21,19 @@ const todo_get = {
     id:{ type: GraphQLID },
     customerId:{ type: GraphQLID },
     employeeId:{ type: GraphQLID },
+    createdAt:{ type: GraphQLString },
+    updatedAt:{ type: GraphQLString },
+
     offset: { type: GraphQLInt },
-    limit: {type: GraphQLInt }
+    limit: {type: GraphQLInt },
+
+    startYear:{type: GraphQLInt },
+    startMonth:{type: GraphQLInt },
+    startDate:{type: GraphQLInt },
+
+    endYear:{type: GraphQLInt },
+    endMonth:{type: GraphQLInt },
+    endDate:{type: GraphQLInt }
 },
 resolve: ( root, args, context, info  ) => todo_controller.getWhere(args,context)
 }

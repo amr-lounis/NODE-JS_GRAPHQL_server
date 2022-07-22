@@ -7,7 +7,7 @@ const authorization_create = {
         operation: { type: GraphQLString },
         roles: { type: GraphQLString },
         args_required: { type: GraphQLString },
-        Attributes_forbidden:{ type: GraphQLString },
+        attributes_forbidden:{ type: GraphQLString },
     },
     resolve: ( root, args, context, info  ) => authorization_controller.create(args,context)
 }
@@ -19,7 +19,7 @@ const authorization_update = {
         operation: { type: GraphQLString },
         roles: { type: GraphQLString },
         args_required: { type: GraphQLString },
-        Attributes_forbidden:{ type: GraphQLString },
+        attributes_forbidden:{ type: GraphQLString },
     },
     resolve: ( root, args, context, info  ) => authorization_controller.update(args,context)
 }

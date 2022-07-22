@@ -8,7 +8,7 @@ const authorization_type = {
         operation: { type: GraphQLString },
         roles: { type: GraphQLString },
         args_required: { type: GraphQLString },
-        Attributes_forbidden:{ type: GraphQLString },
+        attributes_forbidden:{ type: GraphQLString },
         createdAt:{ type: GraphQLString },
         updatedAt:{ type: GraphQLString }
     })

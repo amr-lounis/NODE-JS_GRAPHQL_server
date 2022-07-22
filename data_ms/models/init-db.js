@@ -41,7 +41,7 @@ function initArrayAuthorization(){
             operation:_array[0],
             roles:_array[1],
             args_required:_array[2],
-            Attributes_forbidden:_array[4]
+            attributes_forbidden:_array[3]
         })
     })
     return  arrayAuthorization
@@ -49,7 +49,7 @@ function initArrayAuthorization(){
 
 
 var _arrayOfArraysAuth=[
-    //operation , roles, args_required , Attributes_forbidden
+    //operation , roles, args_required , attributes_forbidden
     ['execute_cmd','admin','command',null],
 
     ['todo_get','admin,employee',null,null],

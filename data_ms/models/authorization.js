@@ -4,6 +4,6 @@ module.exports = function (sequelize, DataTypes) {
         operation: {  type: DataTypes.STRING(50) },
         roles: { type: DataTypes.STRING(255)  },
         args_required: { type: DataTypes.STRING(255) },
-        Attributes_forbidden: { type: DataTypes.STRING(255)  },
+        attributes_forbidden: { type: DataTypes.STRING(255)  },
     });
 };

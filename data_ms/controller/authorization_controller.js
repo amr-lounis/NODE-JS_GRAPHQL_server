@@ -98,7 +98,7 @@ class authorization_controller{
                      element.operation,
                      element.roles, 
                      element.args_required,
-                     element.Attributes_forbidden ])
+                     element.attributes_forbidden ])
             });
             resolve(_authorization);
         }).catch(err => {

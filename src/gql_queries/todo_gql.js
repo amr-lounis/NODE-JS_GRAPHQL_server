@@ -1,4 +1,4 @@
-const {GraphQLObjectType,GraphQLID,GraphQLNonNull,GraphQLString,GraphQLList,GraphQLInt } = require('graphql')
+const {GraphQLObjectType,GraphQLID,GraphQLNonNull,GraphQLString,GraphQLList,GraphQLInt, GraphQLFloat } = require('graphql')
 const {todo_controller} = require("data_ms")
 //----------------------------------------------------------------------------------
 const todo_type = {
@@ -10,6 +10,8 @@ const todo_type = {
         validation: { type: GraphQLInt },
         employeeId:{ type: GraphQLID },
         customerId:{ type: GraphQLID },
+        money_costs:{ type: GraphQLFloat },
+        money_received:{ type: GraphQLFloat },
         createdAt:{ type: GraphQLString },
         updatedAt:{ type: GraphQLString }
     })

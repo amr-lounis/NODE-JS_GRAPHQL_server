@@ -16,6 +16,7 @@ class todo_controller{
     //---------------------------------------------------------------------
     create(args,context){
         return new Promise((resolve, reject) => {
+            args.employeeId =  args.thisUserId
             todo.create(args)
             .then(data => {
                 resolve(data.id);

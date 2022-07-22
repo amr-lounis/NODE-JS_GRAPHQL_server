@@ -1,4 +1,4 @@
-const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
+const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt ,GraphQLFloat } = require('graphql')
 const GraphQLUpload = require('graphql-upload/GraphQLUpload.js');// add "scalar Upload" in typeDefs
 const {todo_controller} = require("data_ms")
 //----------------------------------------------------------------------------------
@@ -8,7 +8,9 @@ const todo_create = {
         name:{ type: GraphQLString },
         description: { type: GraphQLString },
         validation: { type: GraphQLInt },
-        customerId: { type: GraphQLID }
+        customerId: { type: GraphQLID },
+        money_costs:{ type: GraphQLFloat },
+        money_received:{ type: GraphQLFloat },
     },
     resolve: ( root, args, context, info  ) => todo_controller.create(args,context)
 }
@@ -20,7 +22,9 @@ const todo_update = {
         name:{ type: GraphQLString },
         description: { type: GraphQLString },
         validation: { type: GraphQLInt },
-        customerId: { type: GraphQLID }
+        customerId: { type: GraphQLID },
+        money_costs:{ type: GraphQLFloat },
+        money_received:{ type: GraphQLFloat },
     },
     resolve: ( root, args, context, info  ) => todo_controller.update(args,context)
 }

@@ -29,6 +29,8 @@ const todo_get = {
     offset: { type: GraphQLInt },
     limit: {type: GraphQLInt },
 
+    search: { type: GraphQLString },
+
     startYear:{type: GraphQLInt },
     startMonth:{type: GraphQLInt },
     startDate:{type: GraphQLInt },

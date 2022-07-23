@@ -2,7 +2,7 @@ const { authorization_controller} = require("data_ms")
 
 class AuthHelper{
     constructor() {
-        console.log("-----------: AuthHelper class constructor");
+        log("-----------: AuthHelper class constructor");
     }
 
     _arraysIntersection(a1,a2){
@@ -52,33 +52,34 @@ function authorization(operationName,decode,args,attributs){
     .authorization_array
     .forEach((_auth)=> {
         //------------------------------------------------------- test operationName
-        if(_auth[0] == operationName){  
-            console.log('------- authorization : ',_auth)
+        if(_auth[0] == operationName){
             //-------------------------------------------------- test roles
             if(_auth[1] != null && _auth[1] != ''){
                 const roles = _auth[1].split(',')
                 authHelper.role_authorized(decode.role,roles)
             }else{
-                console.log(' authorized for all users .')
+                log(' authorized for all users .')
             }
             //-------------------------------------------------- test args
             if(_auth[2] != null && _auth[2] != ''){
                 const args_required = _auth[2].split(',')
                 authHelper.args_required(args,args_required)
             }else{
-                console.log(' authorized for all args .')
+                log(' authorized for all args .')
             }
             //-------------------------------------------------- test attributes_forbidden
             if(_auth[3] != null && _auth[3] != ''){
                 const attributes_forbidden = _auth[3].split(',')
                 authHelper.attributes_forbidden(attributs,attributes_forbidden)
             }else{
-                console.log(' authorized for all attributes .')
+                log(' authorized for all attributes .')
             }
             //--------------------------------------------------
         }
     })
 }
-
+function log(_message){
+    // console.log(_message)
+}
 
 module.exports = authorization;

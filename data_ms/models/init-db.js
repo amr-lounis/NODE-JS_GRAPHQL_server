@@ -16,6 +16,7 @@ async function initDB(_model){
             await _model.user.create({
                 id:1,
                 name:'admin',
+                password:'admin',
                 roleId:1
             });
             console.log('-----------: user admin created')
@@ -62,8 +63,8 @@ var _arrayOfArraysAuth=[
     
     ['user_get','admin',null,null],
     ['user_get','employee',null,'password'],
-    ['user_signin','admin,employee,anonymous','name,password',null],
-    ['user_create','admin,employee,anonymous','name,password',null],
+    ['user_signin',null,'name,password',null],
+    ['user_create',null,'name,password',null],
     ['user_update','admin,employee','id',null],
     ['user_delete','admin','id',null],
     ['user_image_upload','admin,employee','id,file',null],

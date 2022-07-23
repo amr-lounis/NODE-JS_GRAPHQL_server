@@ -79,6 +79,11 @@ class todo_controller{
             _Object.createdAt= {[Op.between]: [start, end]}
          } catch (error) { console.log('------- error date .')}
         //-----------------
+        if( args.hasOwnProperty('search') ) {
+            _Object.name = {[Op.like]: `%${args.search}%`}
+            // _Object.description = {[Op.like]: `%${args.search}%`}
+        }
+        //-----------------
         if( ! args.hasOwnProperty('offset') ) args.offset= 0;
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;

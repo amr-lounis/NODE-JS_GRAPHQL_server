@@ -1,6 +1,7 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
 const GraphQLUpload = require('graphql-upload/GraphQLUpload.js');// add "scalar Upload" in typeDefs
 const {user_controller,pubsub} = require("data_ms")
+const {my_token} = require("../my_utils")
 //----------------------------------------------------------------------------------
 const user_create = {
     type: GraphQLString,
@@ -58,14 +59,9 @@ const user_signin = {
     },
     resolve: async ( root, args, context, info  ) =>{
         const data = await user_controller.signin(args,context)
-        console.log({ data: data });
-        console.log({ id: data.id, name: data.name, role: data.role.name })
-        if (data) {
-            return my_token.Token_Create({ id: data.id, name: data.name, role: data.role.name });
-        }
-        else {
-            throw new Error('error signin');
-        }
+        const decode = { id: data.id, name: data.name, role: data.role.name }
+        if (data) return my_token.Token_Create(decode);
+        else  throw new Error('error signin');
     }
 }
 //----------------------------------------------------------------------------------

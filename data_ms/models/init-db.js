@@ -7,7 +7,11 @@ async function initDB(_model){
                 id:1,
                 name:'admin'
             });
-            console.log('-----------: role admin created')
+            await _model.role.create({
+                id:2,
+                name:'employee'
+            });
+            console.log('-----------: role admin and employee created')
     }});
 
     await _model.user.count().then( async (count) => {
@@ -56,7 +60,7 @@ var _arrayOfArraysAuth=[
     ['todo_get','admin,employee',null,null],
     ['todo_create','admin,employee','name',null],
     ['todo_update','admin,employee','id',null],
-    ['todo_delete','admin','id','id',null],
+    ['todo_delete','admin','id',null],
     ['todo_images_get','admin,employee','id',null],
     ['todo_image_upload','admin,employee','id,file',null],
     ['todo_image_delete','admin,employee','id,fileNmae',null],

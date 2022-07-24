@@ -9,7 +9,10 @@ if(machineIdSync({original: true}) != 'b403e901-522d-489b-98e2-fce7a11b88e4'){
 }
 
 //-------------- public library
-const { createServer } = require("http");
+const https = require("https");
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
 const { applyMiddleware } = require('graphql-middleware')
 const { ApolloServer} = require("apollo-server-express");
 
@@ -25,7 +28,8 @@ const { WebSocketServer } = require('ws')
 
 //-------------- local library
 const schema = require('./gql_schema');
-const {my_token,authorization} = require('./my_utils')
+const {my_token,authorization} = require('./my_utils');
+const { decode } = require('punycode');
 
 //-------------- config
 const graphql_path = '/graphql';
@@ -63,7 +67,21 @@ async function info_GraphqlMiddleware (resolve, root, args, context, info) {
 
 async function run () {
     const app = express();
-    const httpServer = createServer(app);
+    
+    var httpServer = null
+    var serverSSL = true
+    if(serverSSL){
+        log('--------------- https : using ssl ')
+        const serverOptions = {
+            cert: fs.readFileSync('./assets/cert.pem'),
+            key: fs.readFileSync('./assets/key.pem')
+        }
+        httpServer = https.createServer(serverOptions,app);
+    }
+    else{
+        log('--------------- http : ')
+        httpServer = http.createServer(app);
+    }
     //
     const wsServer = new WebSocketServer({
         server: httpServer,
@@ -94,7 +112,7 @@ async function run () {
             },
           ],
         context: (ctx) => {
-            log(`-------------------- ApolloServer : context: Object.keys(ctx) : --------  ${Object.keys(ctx) }  `)
+            //log(`-------------------- ApolloServer : context: Object.keys(ctx) : --------  ${Object.keys(ctx) }  `)
             const token = ctx?.req?.headers?.authorization || '';
             return {token:token}
          },
@@ -108,17 +126,19 @@ async function run () {
     useServer({
         schema,
         context: (ctx, msg, args) => {
-            log(`-------------------- context useServer : Object.keys(ctx) : --------  ${Object.keys(ctx)} .`)
+            //log(`-------------------- context useServer : Object.keys(ctx) : --------  ${Object.keys(ctx)} .`)
             const token = ctx?.connectionParams?.Authorization || ''
             const decoded =my_token.Token_Verifay(token) ;
             return {decoded:decoded}; 
         },
         onConnect: async (ctx) => {
-            log(`-------------------- onConnect useServer Object.keys(ctx) : ${Object.keys(ctx)} .`)
+            //log(`-------------------- onConnect useServer Object.keys(ctx) : ${Object.keys(ctx)} .`)
             const token = ctx?.connectionParams?.Authorization || ''
             decoded =my_token.Token_Verifay(token)
-            log('-------------------- server : disconnected .')
-            if(decoded.id == null) return false; // return false to sertver disconnect ro throw new Error('')
+            if(decoded.id == null) {// return false to sertver disconnect ro throw new Error('')
+                log('-------------- ERROR WS : TOKEN : server : disconnected .',decoded)
+                return false;
+            } 
         },
         onDisconnect(ctx, code, reason) {
             log('-------------------- onDisconnect useServer .')
@@ -128,7 +148,8 @@ async function run () {
     );
 
     const PORT = Number(APOLLO_SERVER_PORT);
-    httpServer.listen(PORT, () => {log(
+    httpServer.listen(PORT, () => {
+    log(
     `ws://${APOLLO_SERVER_HOST}:${PORT}${server.graphqlPath}\
      and\
      http://${APOLLO_SERVER_HOST}:${PORT}${server.graphqlPath}`
@@ -139,5 +160,5 @@ async function run () {
 run();
 //
 function log(_message){
-    // console.log(_message)
+     console.log(_message)
 }

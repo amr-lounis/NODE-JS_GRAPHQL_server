@@ -9,7 +9,7 @@ class authorization_controller{
         console.log("-----------: authorization controller constructor");
         this._get_authorization_array().then((data)=>{
             this.authorization_array = data;
-            console.log(this.authorization_array)
+            // console.log(this.authorization_array)
         })
         .catch((err)=>{
             console.log("ERROR : authorization_array : ",err.message)

@@ -1,0 +1,1 @@
+openssl req -newkey rsa:2048 -x509 -nodes -keyout ./assets/key.pem -new -out ./assets/cert.pem -sha256 -days 3650

@@ -5,3 +5,6 @@ module.exports = function (sequelize, DataTypes) {
         description: { type: DataTypes.STRING(50) },
     });
 };
+//address: faker.address.cityName(),
+//city: faker.address.city(),
+//country: faker.address.country(),

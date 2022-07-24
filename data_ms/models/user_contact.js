@@ -5,3 +5,7 @@ module.exports = function (sequelize, DataTypes) {
         description: { type: DataTypes.STRING(50) },
     });
 };
+//phone: faker.phone.phoneNumber(),
+//fax: faker.phone.phoneNumber(),
+//website: faker.internet.url(),
+//email: faker.internet.email(),

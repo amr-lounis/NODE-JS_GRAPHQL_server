@@ -1,5 +1,5 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
-const { authorization_controller} = require("data_ms")
+const { authorization_controller} = require("../data_ms")
 //----------------------------------------------------------------------------------
 const authorization_create = {
     type: GraphQLString,

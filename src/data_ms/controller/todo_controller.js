@@ -1,21 +1,23 @@
-const my_files = require('./my_files');
+const { Op } = require("sequelize");
+const my_files = require('./my_files')
 const { models } = require("../models");
-const {user,role} = models ;
+const {todo} = models
 
-//args.thisUserId
-class user_controller{
+//args.thisUserId = decoded.id;
+class todo_controller{
     //---------------------------------------------------------------------
     constructor() {
-        console.log("-----------: user controller constructor");
+        console.log("-----------: constructor : controller todo  ");
     }
     //---------------------------------------------------------------------
     async Exist(id){
-        return await user.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false}).catch((err)=>{return false});
+        return await todo.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false}).catch((err)=>{return false});
     }
     //---------------------------------------------------------------------
     create(args,context){
         return new Promise((resolve, reject) => {
-            user.create(args)
+            args.employeeId =  args.thisUserId
+            todo.create(args)
             .then(data => {
                 resolve(data.id);
             })
@@ -29,7 +31,7 @@ class user_controller{
         return new Promise(async (resolve, reject) => {
             if(! await this.Exist(args.id))reject(new Error('ERROR : NOT EXIST'))
             else{
-                user.destroy({ where: { id: args.id } }).then(data => {
+                todo.destroy({ where: { id: args.id } }).then(data => {
                     if (data >= 1) resolve('DELETED');
                     else reject(new Error('ERROR : CANNOT DELETE'));
                 }).catch(function (err) {
@@ -46,7 +48,7 @@ class user_controller{
                 var id = args.id;
                 delete args['id'];
                 //-------------------
-                user.update(args, { where: { id: id } }
+                todo.update(args, { where: { id: id } }
                 ).then(data => {
                     if (data >= 1) resolve('UPDATED');
                     else reject(new Error('ERROR : CANNOT UPDATED'));
@@ -61,6 +63,8 @@ class user_controller{
         //-----------------
         var _Object = {}
         if( args.hasOwnProperty('id') ) _Object.id = args.id;
+        if( args.hasOwnProperty('employeeId'))  _Object.employeeId=args.employeeId;
+        if( args.hasOwnProperty('customerId')) _Object.customerId = args.customerId;
         //-----------------
         if(
                args.hasOwnProperty('startYear') 
@@ -69,19 +73,24 @@ class user_controller{
             && args.hasOwnProperty('endYear') 
             && args.hasOwnProperty('endMonth') 
             && args.hasOwnProperty('endDate')  
-        )try {
-            const start =new Date(args.startYear, args.startMonth, args.startDate)
-            const end  = new Date(args.endYear  ,args.endMonth   , args.endDate  ) 
+         )try {
+             const start =new Date(args.startYear, args.startMonth, args.startDate)
+             const end  = new Date(args.endYear  ,args.endMonth   , args.endDate  ) 
             _Object.createdAt= {[Op.between]: [start, end]}
-        } catch (error) { console.log('------- error date .')}
+         } catch (error) { console.log('------- error date .')}
+        //-----------------
+        if( args.hasOwnProperty('search') ) {
+            _Object.name = {[Op.like]: `%${args.search}%`}
+            // _Object.description = {[Op.like]: `%${args.search}%`}
+        }
         //-----------------
         if( ! args.hasOwnProperty('offset') ) args.offset= 0;
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;
-        //----------------- 
-        
+        //------------------
+
         return new Promise((resolve, reject) => {
-            user.findAll({
+            todo.findAll({
                 attributes: context.attributes,
                 raw: true,
                 nest: true,
@@ -90,42 +99,27 @@ class user_controller{
                 limit:args.limit
             }).then(data => {
                 resolve(data);
-            }).catch((err) => {
-                reject(err);
+            }).catch(err => {
+                reject('error');
             });
         })
     }
     //---------------------------------------------------------------------
     async image_delete(args,context){
         if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
-        else{ my_files.FileDelete('user',args.id,args.fileNmae)}
+        else{ my_files.FileDelete('todo',args.id,args.fileNmae)}
     } 
     //---------------------------------------------------------------------
     async image_upload(args,context){
         if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
-        else{return my_files.image_upload(args.file,'user',args.id)}
+        else{return my_files.image_upload(args.file,'todo',args.id)}
     }
     //---------------------------------------------------------------------
     async images_get(args,context){
         if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
-        else{ return my_files.UrlListGet('user',args.id)}
+        else{ return my_files.UrlListGet('todo',args.id)}
     } 
     //---------------------------------------------------------------------
-    signin(args,context){
-        return new Promise((resolve, reject) => {
-            user.findOne({
-                where: { name: args.name, password: args.password },
-                include: { model: role },
-                raw: true,
-                nest: true,
-            }).then(data => {
-                if (data) resolve(data);
-                else reject(new Error('error signin'));
-            }).catch((err) => {
-                reject(err);
-            });
-        });
-    }
 }
 
-module.exports = new user_controller()
+module.exports = new todo_controller()

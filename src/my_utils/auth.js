@@ -1,8 +1,8 @@
-const { authorization_controller} = require("data_ms")
+const { authorization_controller} = require("../data_ms")
 
 class AuthHelper{
     constructor() {
-        log("-----------: AuthHelper class constructor");
+        log("-----------: constructor : AuthHelper");
     }
 
     _arraysIntersection(a1,a2){

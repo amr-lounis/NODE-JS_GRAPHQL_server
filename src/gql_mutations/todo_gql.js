@@ -1,6 +1,6 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt ,GraphQLFloat } = require('graphql')
 const GraphQLUpload = require('graphql-upload/GraphQLUpload.js');// add "scalar Upload" in typeDefs
-const {todo_controller} = require("data_ms")
+const {todo_controller} = require("../data_ms")
 //----------------------------------------------------------------------------------
 const todo_create = {
     type: GraphQLString,

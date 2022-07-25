@@ -5,7 +5,7 @@ const JWT_ExpiresDay="7 days"
 
 class my_token {
 	constructor() {
-        console.log("-----------: my_token constructor");
+        console.log("-----------: constructor : my_token");
     }
 
 	Token_Create({ id ,name, role }) {

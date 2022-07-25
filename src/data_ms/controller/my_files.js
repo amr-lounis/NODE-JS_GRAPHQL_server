@@ -5,7 +5,7 @@ const cnf = require("../config/cnf")
 
 class my_files{
     constructor() {
-        console.log("-----------: my_files class constructor");
+        console.log("-----------: constructor : my_files");
     }
 
     IMAGES_DIR = cnf.IMAGES_DIR ;

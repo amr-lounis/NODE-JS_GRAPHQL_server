@@ -1,8 +1,9 @@
 const { GraphQLSchema, GraphQLObjectType } = require('graphql')
+const path = require('path')
 
 const queries = require('./gql_queries')
-const mutations = require('./gql_mutations')
-const subscriptions = require('./gql_subscriptions')
+// const mutations = require('./gql_mutations')
+// const subscriptions = require('./gql_subscriptions')
 
 module.exports = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -10,13 +11,13 @@ module.exports = new GraphQLSchema({
     fields: queries
   }),
 
-  mutation: new GraphQLObjectType({
-    name: 'Mutation',
-    fields: mutations
-  }),
+  // mutation: new GraphQLObjectType({
+  //   name: 'Mutation',
+  //   fields: mutations
+  // }),
 
-  subscription: new GraphQLObjectType({
-    name: 'Subscription',
-    fields: subscriptions
-  }),
+  // subscription: new GraphQLObjectType({
+  //   name: 'Subscription',
+  //   fields: subscriptions
+  // }),
 })

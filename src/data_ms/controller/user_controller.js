@@ -1,28 +1,21 @@
+const my_files = require('./my_files');
 const { models } = require("../models");
-const {authorization} = models
+const {user,role} = models ;
 
-//args.thisUserId = decoded.id;
-class authorization_controller{
+//args.thisUserId
+class user_controller{
     //---------------------------------------------------------------------
-    authorization_array =[]
     constructor() {
-        console.log("-----------: authorization controller constructor");
-        this._get_authorization_array().then((data)=>{
-            this.authorization_array = data;
-            // console.log(this.authorization_array)
-        })
-        .catch((err)=>{
-            console.log("ERROR : authorization_array : ",err.message)
-        })
+        console.log("-----------: constructor : controller user");
     }
     //---------------------------------------------------------------------
     async Exist(id){
-        return await authorization.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false}).catch((err)=>{return false});
+        return await user.count({ where: { id: id } }).then(count => {return (count > 0) ? true : false}).catch((err)=>{return false});
     }
     //---------------------------------------------------------------------
     create(args,context){
         return new Promise((resolve, reject) => {
-            authorization.create(args)
+            user.create(args)
             .then(data => {
                 resolve(data.id);
             })
@@ -36,7 +29,7 @@ class authorization_controller{
         return new Promise(async (resolve, reject) => {
             if(! await this.Exist(args.id))reject(new Error('ERROR : NOT EXIST'))
             else{
-                authorization.destroy({ where: { id: args.id } }).then(data => {
+                user.destroy({ where: { id: args.id } }).then(data => {
                     if (data >= 1) resolve('DELETED');
                     else reject(new Error('ERROR : CANNOT DELETE'));
                 }).catch(function (err) {
@@ -53,9 +46,10 @@ class authorization_controller{
                 var id = args.id;
                 delete args['id'];
                 //-------------------
-                authorization.update(args, { where: { id: id } }
+                user.update(args, { where: { id: id } }
                 ).then(data => {
                     if (data >= 1) resolve('UPDATED');
+                    else reject(new Error('ERROR : CANNOT UPDATED'));
                 }).catch(function (err) {
                     reject(err);
                 });
@@ -67,13 +61,27 @@ class authorization_controller{
         //-----------------
         var _Object = {}
         if( args.hasOwnProperty('id') ) _Object.id = args.id;
-
+        //-----------------
+        if(
+               args.hasOwnProperty('startYear') 
+            && args.hasOwnProperty('startMonth')
+            && args.hasOwnProperty('startDate') 
+            && args.hasOwnProperty('endYear') 
+            && args.hasOwnProperty('endMonth') 
+            && args.hasOwnProperty('endDate')  
+        )try {
+            const start =new Date(args.startYear, args.startMonth, args.startDate)
+            const end  = new Date(args.endYear  ,args.endMonth   , args.endDate  ) 
+            _Object.createdAt= {[Op.between]: [start, end]}
+        } catch (error) { console.log('------- error date .')}
+        //-----------------
         if( ! args.hasOwnProperty('offset') ) args.offset= 0;
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;
         //----------------- 
+        
         return new Promise((resolve, reject) => {
-            authorization.findAll({
+            user.findAll({
                 attributes: context.attributes,
                 raw: true,
                 nest: true,
@@ -82,31 +90,42 @@ class authorization_controller{
                 limit:args.limit
             }).then(data => {
                 resolve(data);
-            }).catch(err => {
+            }).catch((err) => {
                 reject(err);
             });
         })
     }
     //---------------------------------------------------------------------
-     _get_authorization_array(){
-        return new Promise((resolve, reject) => {
-            authorization.findAll({raw: true,nest: true})
-            .then(data => {
-            var _authorization = []
-            data.forEach(element => {
-                _authorization.push([
-                     element.operation,
-                     element.roles, 
-                     element.args_required,
-                     element.attributes_forbidden ])
-            });
-            resolve(_authorization);
-        }).catch(err => {
-            reject(err);
-        });
-        })
+    async image_delete(args,context){
+        if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
+        else{ my_files.FileDelete('user',args.id,args.fileNmae)}
+    } 
+    //---------------------------------------------------------------------
+    async image_upload(args,context){
+        if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
+        else{return my_files.image_upload(args.file,'user',args.id)}
     }
     //---------------------------------------------------------------------
+    async images_get(args,context){
+        if(! await this.Exist(args.id)) throw new Error('ERROR : NOT EXIST')
+        else{ return my_files.UrlListGet('user',args.id)}
+    } 
+    //---------------------------------------------------------------------
+    signin(args,context){
+        return new Promise((resolve, reject) => {
+            user.findOne({
+                where: { name: args.name, password: args.password },
+                include: { model: role },
+                raw: true,
+                nest: true,
+            }).then(data => {
+                if (data) resolve(data);
+                else reject(new Error('error signin'));
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
 }
 
-module.exports = new authorization_controller()
+module.exports = new user_controller()

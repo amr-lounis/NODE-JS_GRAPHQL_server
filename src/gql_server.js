@@ -1,14 +1,19 @@
 ﻿// console.log = function() {}
 //----------------
-const {machineId, machineIdSync} = require('node-machine-id') ;
-log(machineIdSync())
-log(machineIdSync({original: true}))
-if(machineIdSync({original: true}) != 'b403e901-522d-489b-98e2-fce7a11b88e4'){
-    log('This device is not licensed')
-    process.exit()
-}
-
+// const {machineId, machineIdSync} = require('node-machine-id') ;
+// log(machineIdSync())
+// log(machineIdSync({original: true}))
+// if(machineIdSync({original: true}) != 'b403e901-522d-489b-98e2-fce7a11b88e4'){
+//     log('This device is not licensed')
+//     process.exit()
+// }
+// const path = require("path");
+// console.log("process.cwd() = " + process.cwd());
+// console.log("__filename = " + __filename);
+// console.log("path  = " + path.resolve(__filename,'../../assets/cert.pem'));
+// process.exit()
 //-------------- public library
+console.log('--------------------',1)
 const https = require("https");
 const http = require("http");
 const fs = require("fs");
@@ -17,20 +22,23 @@ const { applyMiddleware } = require('graphql-middleware')
 const { ApolloServer} = require("apollo-server-express");
 
 //--------------
+console.log('--------------------',2)
 const express = require("express");
 const attributesSelected = require('graphql-fields')
 const graphqlUploadExpress = require('graphql-upload/graphqlUploadExpress.js');
 
+console.log('--------------------',3)
 //-------------- WS
 const { ApolloServerPluginDrainHttpServer }  = require("apollo-server-core");
 const { useServer } = require('graphql-ws/lib/use/ws')
 const { WebSocketServer } = require('ws')
 
+console.log('--------------------',4)
 //-------------- local library
 const schema = require('./gql_schema');
+console.log('--------------------',5)
 const {my_token,authorization} = require('./my_utils');
-const { decode } = require('punycode');
-
+console.log('--------------------',6)
 //-------------- config
 const graphql_path = '/graphql';
 const APOLLO_SERVER_HOST = 'localhost';
@@ -72,9 +80,13 @@ async function run () {
     var serverSSL = true
     if(serverSSL){
         log('--------------- https : using ssl ')
+        const file_cert= path.resolve(__dirname,'../assets/cert.pem')
+        const file_key = path.resolve(__dirname,'../assets/key.pem')
+        console.log('file_cert : ',file_cert)
+        console.log('file_key  : ',file_key)
         const serverOptions = {
-            cert: fs.readFileSync('./assets/cert.pem'),
-            key: fs.readFileSync('./assets/key.pem')
+            cert: fs.readFileSync(file_cert),
+            key: fs.readFileSync(file_key)
         }
         httpServer = https.createServer(serverOptions,app);
     }

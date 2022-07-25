@@ -38,5 +38,5 @@ user_notification_receiver = {
 }
 //----------------------------------------------------------------------------------
 module.exports = {
-    user_notification_receiver
+     user_notification_receiver
 }

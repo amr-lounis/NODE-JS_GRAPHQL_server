@@ -1,6 +1,6 @@
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
 const GraphQLUpload = require('graphql-upload/GraphQLUpload.js');// add "scalar Upload" in typeDefs
-const {user_controller} = require("data_ms")
+const {user_controller} = require("../data_ms")
 const {my_token,pubsub} = require("../my_utils")
 //----------------------------------------------------------------------------------
 const user_create = {

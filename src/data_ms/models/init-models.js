@@ -13,6 +13,9 @@ var _authorization = require("./authorization");
 var _role = require("./role");
 
 var _user = require("./user");
+var _user_address = require("./user_address");
+var _user_contact = require("./user_contact");
+var _user_info = require("./user_info");
 
 var _todo = require("./todo");
 
@@ -22,10 +25,10 @@ class InitModels{
     constructor(sequelize) {
         console.log("-----------: constructor : InitModels");
         
-        var product_category = _product_category(sequelize, DataTypes);
-        var product_stock = _product_stock(sequelize, DataTypes);
-        var product_unit = _product_unit(sequelize, DataTypes);
         var product = _product(sequelize, DataTypes);
+        var product_unit = _product_unit(sequelize, DataTypes);
+        var product_stock = _product_stock(sequelize, DataTypes);
+        var product_category = _product_category(sequelize, DataTypes);
 
         var sold_invoice = _sold_invoice(sequelize, DataTypes);
         var sold_product = _sold_product(sequelize, DataTypes);
@@ -35,43 +38,39 @@ class InitModels{
         var role = _role(sequelize, DataTypes);
 
         var user = _user(sequelize, DataTypes);
+        var user_address = _user_address(sequelize, DataTypes);
+        var user_contact = _user_contact(sequelize, DataTypes);
+        var user_info = _user_info(sequelize, DataTypes);
 
         var todo = _todo(sequelize, DataTypes);
         //------------------------------------------------------------------------
-        role.hasMany(user);
-        user.belongsTo(role);
-        //------------------------------------------------------------------------
-        product_category.hasMany(product_category , { foreignKey: "productCategoryId" });
-        product_category.belongsTo(product_category, { foreignKey: "productCategoryId" });
-
-        product_category.hasMany(product);
-        product.belongsTo(product_category);
-
-        product_unit.hasMany(product);
-        product.belongsTo(product_unit);
-
-        product.hasMany(product_stock);
-        product_stock.belongsTo(product);
-        //------------------------------------------------------------------------
-        sold_invoice.hasMany(sold_product);
-        sold_product.belongsTo(sold_invoice);
-        //------------------------------------------------------------------------
-        user.hasMany(sold_invoice, { foreignKey: "employeeId" });
-        sold_invoice.belongsTo(user, { foreignKey: "employeeId" });
-
-        user.hasMany(sold_invoice, { foreignKey: "customerId" });
-        sold_invoice.belongsTo(user, { foreignKey: "customerId" });
-        //------------------------------------------------------------------------
-        user.hasMany(todo, { foreignKey: "employeeId" });
-        todo.belongsTo(user, { foreignKey: "employeeId" });
-
-        user.hasMany(todo, { foreignKey: "customerId" });
-        todo.belongsTo(user, { foreignKey: "customerId" });
-        //------------------------------------------------------------------------
         product.hasMany(sold_product);//id 1 yat3awad fi akthar min stok
-        sold_product.belongsTo(product);// lakin kol stok yochir ila produit wahad
+        product_unit.hasMany(product);
+        product_category.hasMany(product);
+        product_category.hasMany(product_category , { foreignKey: "productCategoryId" });
+        sold_invoice.hasMany(sold_product);
+        product.hasMany(product_stock);
+        role.hasMany(user);
+        user.hasMany(sold_invoice, { foreignKey: "employeeId" });
+        user.hasMany(sold_invoice, { foreignKey: "customerId" });
+        user.hasMany(todo, { foreignKey: "employeeId" });
+        user.hasMany(todo, { foreignKey: "customerId" });
+        user.hasOne(user_address)
+        user.hasOne(user_contact)
+        user.hasOne(user_info)
         //------------------------------------------------------------------------
-
+        // todo.belongsTo(user, { foreignKey: "customerId" });
+        // sold_product.belongsTo(product);// lakin kol stok yochir ila produit wahad
+        // user.belongsTo(role);
+        // product_category.belongsTo(product_category, { foreignKey: "productCategoryId" });  
+        // product.belongsTo(product_category);
+        // product.belongsTo(product_unit);
+        // product_stock.belongsTo(product);
+        // sold_product.belongsTo(sold_invoice);
+        // sold_invoice.belongsTo(user, { foreignKey: "employeeId" });
+        // sold_invoice.belongsTo(user, { foreignKey: "customerId" });
+        // todo.belongsTo(user, { foreignKey: "employeeId" });
+        //------------------------------------------------------------------------
         this.model = {
             product_category,
             product_stock,

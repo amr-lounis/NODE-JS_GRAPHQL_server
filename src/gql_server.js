@@ -1,18 +1,13 @@
 ﻿// console.log = function() {}
-//----------------
-// const {machineId, machineIdSync} = require('node-machine-id') ;
-// log(machineIdSync())
-// log(machineIdSync({original: true}))
-// if(machineIdSync({original: true}) != 'b403e901-522d-489b-98e2-fce7a11b88e4'){
-//     log('This device is not licensed')
-//     process.exit()
-// }
-// const path = require("path");
-// console.log("process.cwd() = " + process.cwd());
-// console.log("__filename = " + __filename);
-// console.log("path  = " + path.resolve(__filename,'../../assets/cert.pem'));
-// process.exit()
-//-------------- public library
+// ----------------
+const {machineId, machineIdSync} = require('node-machine-id') ;
+log(machineIdSync())
+log(machineIdSync({original: true}))
+if(machineIdSync({original: true}) != 'b403e901-522d-489b-98e2-fce7a11b88e4'){
+    log('This software is not licensed')
+    process.exit()
+}
+// -------------- public library
 const https = require("https");
 const http = require("http");
 const fs = require("fs");

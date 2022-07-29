@@ -9,8 +9,12 @@ const todo_create = {
         description: { type: GraphQLString },
         validation: { type: GraphQLInt },
         customerId: { type: GraphQLID },
-        money_costs:{ type: GraphQLFloat },
-        money_received:{ type: GraphQLFloat },
+        money_losses:{ type: GraphQLFloat },
+        money_required:{ type: GraphQLFloat },
+        money_discount:{ type: GraphQLFloat },
+        money_after_discount:{ type: GraphQLFloat },
+        money_paid:{ type: GraphQLFloat },
+        money_unpaid:{ type: GraphQLFloat },
     },
     resolve: ( root, args, context, info  ) => todo_controller.create(args,context)
 }
@@ -23,8 +27,12 @@ const todo_update = {
         description: { type: GraphQLString },
         validation: { type: GraphQLInt },
         customerId: { type: GraphQLID },
-        money_costs:{ type: GraphQLFloat },
-        money_received:{ type: GraphQLFloat },
+        money_losses:{ type: GraphQLFloat },
+        money_required:{ type: GraphQLFloat },
+        money_discount:{ type: GraphQLFloat },
+        money_after_discount:{ type: GraphQLFloat },
+        money_paid:{ type: GraphQLFloat },
+        money_unpaid:{ type: GraphQLFloat },
     },
     resolve: ( root, args, context, info  ) => todo_controller.update(args,context)
 }

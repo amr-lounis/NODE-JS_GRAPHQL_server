@@ -4,7 +4,11 @@ module.exports = function (sequelize, DataTypes) {
         name: { type: DataTypes.STRING(50) },
         description: { type: DataTypes.STRING(255) },
         validation: { type: DataTypes.INTEGER },
-        money_costs: { type: DataTypes.DOUBLE },
-        money_received: { type: DataTypes.DOUBLE }
+        money_losses : { type: DataTypes.DOUBLE },
+        money_required : { type: DataTypes.DOUBLE },
+        money_discount : { type: DataTypes.DOUBLE },
+        money_after_discount: { type: DataTypes.DOUBLE },
+        money_paid: { type: DataTypes.DOUBLE },
+        money_unpaid: { type: DataTypes.DOUBLE}
     });
 };

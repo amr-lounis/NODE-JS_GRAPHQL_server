@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('user_address', {
-        name: { type: DataTypes.STRING(50), unique: true },
-        description: { type: DataTypes.STRING(50) },
+        address: { type: DataTypes.STRING(250)},
+        City: { type: DataTypes.STRING(50)},
+        state: { type: DataTypes.STRING(50)},
+        Country: { type: DataTypes.STRING(50)},
+        description: { type: DataTypes.STRING(250) },
     });
 };
-//address: faker.address.cityName(),
-//city: faker.address.city(),
-//country: faker.address.country(),

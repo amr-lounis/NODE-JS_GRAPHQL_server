@@ -45,31 +45,46 @@ class InitModels{
         var todo = _todo(sequelize, DataTypes);
         //------------------------------------------------------------------------
         product.hasMany(sold_product);//id 1 yat3awad fi akthar min stok
+        sold_product.belongsTo(product);// lakin kol stok yochir ila produit wahad
+
         product_unit.hasMany(product);
+        product.belongsTo(product_unit);
+        
         product_category.hasMany(product);
+        product.belongsTo(product_category);
+
         product_category.hasMany(product_category , { foreignKey: "productCategoryId" });
+        product_category.belongsTo(product_category, { foreignKey: "productCategoryId" });
+
         sold_invoice.hasMany(sold_product);
+        sold_product.belongsTo(sold_invoice);
+
         product.hasMany(product_stock);
+        product_stock.belongsTo(product);
+
         role.hasMany(user);
+        user.belongsTo(role);
+
         user.hasMany(sold_invoice, { foreignKey: "employeeId" });
+        sold_invoice.belongsTo(user, { foreignKey: "employeeId" });
+
         user.hasMany(sold_invoice, { foreignKey: "customerId" });
+        sold_invoice.belongsTo(user, { foreignKey: "customerId" });
+
         user.hasMany(todo, { foreignKey: "employeeId" });
+        todo.belongsTo(user, { foreignKey: "employeeId" });
+
         user.hasMany(todo, { foreignKey: "customerId" });
+        todo.belongsTo(user, { foreignKey: "customerId" });
+        //---------------------
         user.hasOne(user_address)
+        user_address.belongsTo(user)
+
         user.hasOne(user_contact)
+        user_contact.belongsTo(user)
+
         user.hasOne(user_info)
-        //------------------------------------------------------------------------
-        // todo.belongsTo(user, { foreignKey: "customerId" });
-        // sold_product.belongsTo(product);// lakin kol stok yochir ila produit wahad
-        // user.belongsTo(role);
-        // product_category.belongsTo(product_category, { foreignKey: "productCategoryId" });  
-        // product.belongsTo(product_category);
-        // product.belongsTo(product_unit);
-        // product_stock.belongsTo(product);
-        // sold_product.belongsTo(sold_invoice);
-        // sold_invoice.belongsTo(user, { foreignKey: "employeeId" });
-        // sold_invoice.belongsTo(user, { foreignKey: "customerId" });
-        // todo.belongsTo(user, { foreignKey: "employeeId" });
+        user_info.belongsTo(user)
         //------------------------------------------------------------------------
         this.model = {
             product_category,

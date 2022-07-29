@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const JWT_Secret ="jwtSecret"
-const JWT_ExpiresDay="7 days"
+const JWT_ExpiresDay="30 days"
 
 class my_token {
 	constructor() {

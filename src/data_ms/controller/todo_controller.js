@@ -47,6 +47,7 @@ class todo_controller{
             else{
                 var id = args.id;
                 delete args['id'];
+                delete args['thisUserId'];
                 //-------------------
                 todo.update(args, { where: { id: id } }
                 ).then(data => {
@@ -88,7 +89,7 @@ class todo_controller{
         if( ! args.hasOwnProperty('limit') ) args.limit= 10;
         else if(args.limit > 100) args.limit= 100;
         //------------------
-
+        console.log(_Object)
         return new Promise((resolve, reject) => {
             todo.findAll({
                 attributes: context.attributes,
@@ -100,7 +101,7 @@ class todo_controller{
             }).then(data => {
                 resolve(data);
             }).catch(err => {
-                reject('error');
+                reject(err);
             });
         })
     }
